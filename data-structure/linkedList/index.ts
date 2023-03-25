@@ -1,22 +1,23 @@
 // linked list
 
 const LinkedList = <T>() => {
-  let head: any = {
-    data: null,
-  };
+  let head: any = null;
+  let tail: any = null;
 
   const add = (data: any) => {
-    if (!head.data) {
-      head = { data };
-      return;
+    const newNode = { data };
+
+    if (!head) {
+      head = newNode;
     }
 
-    let current = head;
-    while (current.next) {
-      current = current.next;
+    // insert by tail
+    if (tail) {
+      tail.next = newNode;
     }
 
-    current.next = { data };
+    tail = newNode;
+    return;
   };
 
   const getList = () => {
