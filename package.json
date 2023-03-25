@@ -16,6 +16,7 @@
     "vitest": "^0.29.7"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@vitest/coverage-c8": "^0.29.7",
     "@vitest/ui": "^0.29.7"
   }
