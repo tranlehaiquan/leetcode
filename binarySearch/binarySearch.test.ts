@@ -1,4 +1,5 @@
 import { binarySearch } from "./index";
+// import { expect, test } from 'vitest'
 
 // test case 1
 test("binarySearch([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 5) should return 4", () => {
@@ -28,4 +29,11 @@ test("binarySearch([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 10) should return 9", () => 
 // test case 6
 test("binarySearch([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 6) should return 5", () => {
   expect(binarySearch([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 6)).toBe(5);
+});
+
+// test case 7 with string
+test("binarySearch(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'], 'f') should return 5", () => {
+  expect(
+    binarySearch(["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"], "f")
+  ).toBe(5);
 });
