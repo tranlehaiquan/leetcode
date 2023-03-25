@@ -48,18 +48,13 @@ jobs:
       - run: yarn
       - run: yarn test
       - run: yarn coverage
-      - name: Archive code coverage results
-        uses: actions/upload-artifact@v3
-        with:
-          name: code-coverage-report
-          path: coverage
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
           # Upload dist repository
-          name: code-coverage-report
+          name: github-pages
           path: ./coverage
       - name: Deploy to GitHub Pages
         id: deployment
