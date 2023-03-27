@@ -1,5 +1,5 @@
+import { faker } from "@faker-js/faker";
 import { binarySearch } from "../../binarySearch";
-import { sortAlphabetically } from "../../utils/sortAlphabetically";
 
 const binaryInventory = () => {
   const inventory: string[] = [];
@@ -12,8 +12,17 @@ const binaryInventory = () => {
     const alreadyExist = haveItem(item);
     if (alreadyExist) return;
 
-    inventory.push(item);
-    inventory.sort(sortAlphabetically);
+    let insertIndex;
+    for (let x = 0; x < inventory.length; x++) {
+      if (item < inventory[x]) {
+        insertIndex = x;
+        break;
+      }
+    }
+    if (insertIndex == undefined) {
+      insertIndex = inventory.length;
+    }
+    inventory.splice(insertIndex, 0, item);
   };
 
   const haveItem = (item: string) => {
