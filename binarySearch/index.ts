@@ -32,7 +32,6 @@ export const binarySearchRecursion = (
   search: number | string,
   offset: number = 0
 ): number => {
-  console.log(arr, search);
   const middle = Math.floor(arr.length / 2);
   // base case
   if (arr[middle] === search) return offset + middle;
