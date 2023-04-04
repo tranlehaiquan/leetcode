@@ -43,30 +43,26 @@ const splitMessage = (
     let chunkMessageWithNumber: string = `${x + 1}/${"x".repeat(
       possibleTotalChunkStringLength
     )} ${chunkMessage}`;
+
     // handle if chunkMessageWithNumber more than chunkSize
     if (chunkMessageWithNumber.length > chunkSize) {
       // message need to move
-      let messageNeedMove = "";
+      let indexSplit = chunkSize - 1;
 
-      while (chunkMessageWithNumber.length > chunkSize) {
-        const chunkMessageWithNumberWords = chunkMessageWithNumber.split(" ");
-        if (messageNeedMove.length) {
-          messageNeedMove = `${chunkMessageWithNumberWords.pop()} ${messageNeedMove}`;
-        } else {
-          messageNeedMove = `${chunkMessageWithNumberWords.pop()}`;
-        }
-
-        // update chunkMessageWithNumber
-        chunkMessageWithNumber = chunkMessageWithNumberWords.join(" ");
+      while (chunkMessageWithNumber[indexSplit] !== " " && indexSplit > 0) {
+        indexSplit--;
       }
 
+      let messageNeedMove = chunkMessageWithNumber.slice(indexSplit + 1);
+      chunkMessageWithNumber = chunkMessageWithNumber.slice(0, indexSplit + 1);
       // add messageNeedMove to next chunk
       if (!chunkMessages[x + 1]) {
         chunkMessages[x + 1] = messageNeedMove;
       } else {
-        chunkMessages[x + 1] = `${messageNeedMove} ` + chunkMessages[x + 1];
+        chunkMessages[x + 1] = `${messageNeedMove} ${chunkMessages[x + 1]}`;
       }
     }
+
     chunkMessagesWithNumber.push(chunkMessageWithNumber);
   }
 
