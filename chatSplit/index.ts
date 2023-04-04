@@ -1,8 +1,8 @@
 export const MAX_MESSAGE_LENGTH = 50;
 
-const splitMessage = (msg: string): string[] => {
+const splitMessage = (msg: string, chunkSize: number = MAX_MESSAGE_LENGTH): string[] => {
   // base case
-  if (msg.length <= MAX_MESSAGE_LENGTH) return [msg];
+  if (msg.length <= chunkSize) return [msg];
 
   // split message into words
   const words = msg.split(" ");
@@ -17,7 +17,7 @@ const splitMessage = (msg: string): string[] => {
       const currentChunk = chunkMessages[chunkMessages.length - 1];
 
       // if can't add word to current chunk
-      if (currentChunk.length + word.length > MAX_MESSAGE_LENGTH + 1) {
+      if (currentChunk.length + word.length > chunkSize + 1) {
         // create new chunk
         chunkMessages.push(word);
       } else {
@@ -40,21 +40,20 @@ const splitMessage = (msg: string): string[] => {
     let chunkMessageWithNumber: string = `${x + 1}/${"x".repeat(
       possibleTotalChunkStringLength
     )} ${chunkMessage}`;
-
-    // handle if chunkMessageWithNumber more than MAX_MESSAGE_LENGTH
-    if (chunkMessageWithNumber.length > MAX_MESSAGE_LENGTH) {
+    // handle if chunkMessageWithNumber more than chunkSize
+    if (chunkMessageWithNumber.length > chunkSize) {
       // message need to move
       let messageNeedMove = "";
 
       while (
-        chunkMessageWithNumber.length - messageNeedMove.length >
-        MAX_MESSAGE_LENGTH
+        chunkMessageWithNumber.length >
+        chunkSize
       ) {
         const chunkMessageWithNumberWords = chunkMessageWithNumber.split(" ");
         if (messageNeedMove.length) {
-          messageNeedMove += ` ${chunkMessageWithNumberWords.pop()}`;
+          messageNeedMove = `${chunkMessageWithNumberWords.pop()} ${messageNeedMove}`;
         } else {
-          messageNeedMove += `${chunkMessageWithNumberWords.pop()}`;
+          messageNeedMove = `${chunkMessageWithNumberWords.pop()}`;
         }
 
         // update chunkMessageWithNumber
@@ -68,7 +67,6 @@ const splitMessage = (msg: string): string[] => {
         chunkMessages[x + 1] = `${messageNeedMove} ` + chunkMessages[x + 1];
       }
     }
-
     chunkMessagesWithNumber.push(chunkMessageWithNumber);
   }
 
