@@ -1,6 +1,9 @@
 export const MAX_MESSAGE_LENGTH = 50;
 
-const splitMessage = (msg: string, chunkSize: number = MAX_MESSAGE_LENGTH): string[] => {
+const splitMessage = (
+  msg: string,
+  chunkSize: number = MAX_MESSAGE_LENGTH
+): string[] => {
   // base case
   if (msg.length <= chunkSize) return [msg];
 
@@ -45,10 +48,7 @@ const splitMessage = (msg: string, chunkSize: number = MAX_MESSAGE_LENGTH): stri
       // message need to move
       let messageNeedMove = "";
 
-      while (
-        chunkMessageWithNumber.length >
-        chunkSize
-      ) {
+      while (chunkMessageWithNumber.length > chunkSize) {
         const chunkMessageWithNumberWords = chunkMessageWithNumber.split(" ");
         if (messageNeedMove.length) {
           messageNeedMove = `${chunkMessageWithNumberWords.pop()} ${messageNeedMove}`;
