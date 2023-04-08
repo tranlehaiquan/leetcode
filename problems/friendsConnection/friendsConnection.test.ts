@@ -9,6 +9,7 @@ describe("Find friends closest degrees", () => {
       "BamBam:Pebbles",
       "Barney:Dino",
       "Dino:Wilma",
+      "Quan:Wilma"
     ];
     const name1 = "Fred";
     const name2 = "Wilma";
