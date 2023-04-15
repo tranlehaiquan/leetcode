@@ -1,6 +1,8 @@
 // use case: using to find shortest (operation) path between two nodes in a graph
 // keywords: queue, breadth first search, shortest path
 
+import findPathChildToParent from "../utils/findPathChildToParent";
+
 type Graph = {
   [key: string]: string[];
 };
@@ -42,21 +44,6 @@ const breadthFirstSearch = (
 
   return -1;
 };
-
-const findPathChildToParent = (childParentGraph: { [key: string]: string }, child: string): string[] => {
-  if(!childParentGraph[child]) return [];
-
-  const path: string[] = [child];
-  let currentChild = child;
-
-  while(childParentGraph[currentChild]) {
-    const parent = childParentGraph[currentChild];
-    path.unshift(parent);
-    currentChild = parent;
-  }
-
-  return path;
-}
 
 export const breadthFirstSearchPath = (
   graph: Graph,
