@@ -1,3 +1,6 @@
+// quicksort idea
+// Pick a pivot
+//  then move all items less than pivot to left
 const quickSort = (arr: number[]): number[] => {
   // base case
   if (!arr.length || arr.length === 1) return arr;
