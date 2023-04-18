@@ -15,7 +15,6 @@ describe("chatSplit", () => {
   it("should split to message length smaller or equal 50", () => {
     const message = faker.lorem.sentence(10000);
     const allLestThan50 = chatSplit(message, 50).every((i) => i.length <= 50);
-    chatSplit(message, 50).forEach((i) => console.log(i));
     expect(allLestThan50).equal(true);
   });
 });

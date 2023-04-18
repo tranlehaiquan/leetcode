@@ -6,14 +6,12 @@ const solution = (farm: number[]): number => {
   const width = Math.min(farm[0], farm[1]);
   // base case
   if (length % width === 0) {
-    // console.log(`Possible with ${width}`);
     return width;
   }
 
   // recursion case
   // make the farm smaller
   const newFarm: [number, number] = [width, length - width];
-  // console.log(`Make farm smaller ${newFarm}`);
   return solution(newFarm);
 };
 
