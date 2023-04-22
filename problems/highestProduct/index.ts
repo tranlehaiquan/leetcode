@@ -10,23 +10,20 @@
 // Output: 5 * 7 * 10 = 350
 const highestProduct = (arr: number[]): number => {
   const numbers: number[] = [];
+  const sortedArr: number[] = arr.sort((a, b) => a - b);
 
-  for (const n of arr) {
-    if (numbers.length < 3) {
-      numbers.push(n);
-    } else {
-      const minNumbers = Math.min(...numbers);
+  // 3 highest numbers
+  const threeHighest =
+    (sortedArr.at(-1) as number) *
+    (sortedArr.at(-2) as number) *
+    (sortedArr.at(-3) as number);
+  // 2 lowest numbers and 1 highest number
+  const twoLowestOneHighest =
+    (sortedArr.at(0) as number) *
+    (sortedArr.at(1) as number) *
+    (sortedArr.at(-1) as number);
 
-      if (n > minNumbers) {
-        // replace min with new number
-        numbers[numbers.indexOf(minNumbers)] = n;
-      }
-    }
-  }
-  return numbers.reduce((pre, current) => {
-    if(!pre) return current;
-    return pre * current;
-  });
+  return Math.max(threeHighest, twoLowestOneHighest);
 };
 
 export default highestProduct;
