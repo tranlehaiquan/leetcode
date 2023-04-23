@@ -2,7 +2,7 @@ const selectionSort = (items: number[]): number[] => {
   const result: number[] = [...items];
 
   for (let x = 0; x < result.length; x++) {
-    for (let y = 0; y < result.length; y++) {
+    for (let y = x; y < result.length; y++) {
       if (result[x] < result[y]) {
         // switch x, y
         const temp = result[x];
