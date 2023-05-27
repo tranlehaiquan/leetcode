@@ -39,4 +39,37 @@ const meetingRoom = (intervals: number[][]): number => {
   return rooms.length;
 };
 
+export const meetingRoom2 = (intervals: number[][]): number => {
+  let max = 0;
+
+  // [[5, 10], [15, 20]] -> {5: 1, 10: -1, 15: 1, 20: -2};
+  const intervalByKey = intervals.reduce<Record<string, number>>(
+    (acc, current) => {
+      const [start, end] = current;
+
+      acc[start] = (acc[start] || 0) + 1;
+      acc[end] = (acc[end] || 0) - 1;
+
+      return acc;
+    },
+    {}
+  );
+
+  const keysSorted = Object.keys(intervalByKey).sort(
+    (a, b) => Number(a) - Number(b)
+  );
+    
+  let currentRoom = 0;
+  keysSorted.forEach((time) => {
+    const numberOfRoom = intervalByKey[time];
+    currentRoom += numberOfRoom;
+
+    if (currentRoom > max) {
+      max = currentRoom;
+    }
+  });
+
+  return max;
+};
+
 export default meetingRoom;
