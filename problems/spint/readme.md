@@ -1,0 +1,1 @@
+Define a slot machine with three reels that can individually "spin"(). and then display() the current contents of all the reels.
