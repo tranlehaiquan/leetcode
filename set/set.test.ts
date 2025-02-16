@@ -2,7 +2,7 @@ import { intersection, difference, union } from "./index";
 import { faker } from "@faker-js/faker";
 
 // array names book
-const names = [...Array(100000)].map(() => faker.name.firstName());
+const names = [...Array(100000)].map(() => faker.person.firstName());
 
 // name book random 1000 names
 const nameBook = new Set(names);
