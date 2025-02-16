@@ -1,6 +1,8 @@
 /**
  * binary search a sorted array
  * return the index of the number if found or -1 if not found
+ * 
+ * Assume: arr is sorted
  */
 export const binarySearch = (
   arr: number[] | string[],
