@@ -23,7 +23,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install
 
       - name: Install npm-check-updates
         run: pnpm add -g npm-check-updates
@@ -43,7 +43,7 @@ jobs:
 
       - name: Install updated dependencies
         if: steps.check.outputs.outdated == 'true'
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Create Pull Request
         if: steps.check.outputs.outdated == 'true'
