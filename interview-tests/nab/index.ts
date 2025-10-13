@@ -72,3 +72,67 @@ export const isValidPhoneNumber = (s: string) => {
   const isValid = !numberGroup.some((i) => isNaN(+i));
   return isValid;
 };
+
+// 🔁 Problem 3 — Maximum Number of 3-Letter Palindromes Buildable from a String
+// Description
+// Given a string s of length n, determine the maximum number of distinct 3-letter palindromes that can be formed using the characters in s.
+// A 3-letter palindrome is a string of the form:
+// a b a
+// where the first and last characters are the same, and the middle character can be any letter (including the same one).
+// You may rearrange the characters of s freely to build as many distinct palindromic triplets as possible.
+// Return the number of unique 3-letter palindromes that can be formed.
+// Function Signature
+// def max_palindromic_triplets(s: str) -> int:
+// Input
+// A string s consisting of lowercase English letters.
+// Output
+// An integer representing the maximum number of distinct 3-letter palindromes that can be built from the characters of s.
+// Constraints
+// 1 ≤ len(s) ≤ 10⁵
+// s contains only lowercase English letters ('a'–'z').
+
+// Example 1
+// Input:  s = "aaaabc"
+// Output: 2
+// Explanation:
+// Possible palindromes: "aba", "aca".
+
+// Example 2
+// Input:  s = "xyvzwy"
+// Output: 1
+// Explanation:
+// You can form "yxy", "yvy", "yzy", or "ywy", but only one distinct palindrome is possible.
+
+// Example 3
+// Input:  s = "dd"
+// Output: 0
+// Explanation:
+// Not enough characters to form any 3-letter palindrome.
+
+// Example 4
+// Input:  s = "fknfkn"
+// Output: 2
+// Explanation:
+// Possible palindromes: "fkf" and "nkn".
+
+export const maxPalindromicTriplets = (s: string): number => {
+  if (s.length < 3) return 0;
+
+  // Count character frequencies
+  const count: { [key: string]: number } = {};
+  for (const char of s) {
+    count[char] = (count[char] || 0) + 1;
+  }
+
+  // Count pairs (characters that appear at least twice)
+  let pairs = 0;
+  let singles = 0;
+
+  for (const freq of Object.values(count)) {
+    pairs += Math.floor(freq / 2);
+    if (freq % 2 === 1) singles++;
+  }
+
+  // Each palindrome needs 1 pair + 1 middle character
+  return Math.min(pairs, Math.floor(s.length / 3));
+};
