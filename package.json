@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/node": "^24.9.1",
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
     "turbo": "^2.5.8",

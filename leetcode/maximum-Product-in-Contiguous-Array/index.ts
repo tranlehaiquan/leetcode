@@ -23,7 +23,7 @@
 
 export default function maxProductSubArray(numbers: number[]): number {
   if (numbers.length === 1) return numbers[0];
-  let r;
+  let r = 0;
 
   for (let x = 0; x < numbers.length; x++) {
     for (let y = x; y < numbers.length; y++) {
@@ -39,3 +39,28 @@ export default function maxProductSubArray(numbers: number[]): number {
 
   return r;
 }
+
+export const maxProductSubArray2 = (numbers: number[]): number => {
+  let maxSoFar = numbers[0];
+  let maxEndingHere = numbers[0];
+  let minEndingHere = numbers[0];
+
+  for (let i = 1; i < numbers.length; i++) {
+    const num = numbers[i];
+
+    if (num < 0) {
+      [maxEndingHere, minEndingHere] = [minEndingHere, maxEndingHere];
+    }
+
+    maxEndingHere = Math.max(num, maxEndingHere * num);
+    minEndingHere = Math.min(num, minEndingHere * num);
+
+    maxSoFar = Math.max(maxSoFar, maxEndingHere);
+  }
+
+  return maxSoFar;
+};
+
+console.log(maxProductSubArray2([1, 2, -3, 5, 1])); // 5
+console.log(maxProductSubArray2([9])); // 9
+console.log(maxProductSubArray2([1, 2, 0, -1, 8, -4])); // 32
