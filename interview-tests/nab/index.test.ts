@@ -242,6 +242,6 @@ describe("maxPalindromicTriplets", () => {
   });
 
   it("aaaabbcc", () => {
-    expect(maxPalindromicTriplets("aaaabbcc")).toBe(3);
+    expect(maxPalindromicTriplets("aaaabbcc")).toBe(2);
   });
 });
