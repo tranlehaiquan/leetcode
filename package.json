@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^24.10.1",
+    "@types/node": "^25.0.2",
     "prettier": "^3.7.4",
     "ts-node": "^10.9.2",
     "turbo": "^2.6.3",
@@ -25,5 +25,5 @@
     "@vitest/ui": "^4.0.15",
     "vitest": "^4.0.15"
   },
-  "packageManager": "pnpm@10.24.0"
+  "packageManager": "pnpm@10.25.0"
 }
