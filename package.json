@@ -4,18 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "turbo:test": "turbo test",
-    "test": "vitest run",
-    "test:ui": "vitest --ui",
-    "coverage": "vitest run --coverage"
+    "test": "bun --bun vitest run",
+    "test:ui": "bun --bun vitest --ui",
+    "coverage": "bun --bun vitest run --coverage"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@types/node": "^24.10.4",
     "prettier": "^3.7.4",
-    "ts-node": "^10.9.2",
-    "turbo": "^2.7.1",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
