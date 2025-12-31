@@ -30,9 +30,6 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - run: pnpm install
-      - run: pnpm test
-      - run: pnpm coverage
+      - run: bun install
+      - run: bun test
+      - run: bun coverage
