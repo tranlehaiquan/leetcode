@@ -1,0 +1,66 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      prettier:
+        specifier: ^3.7.4
+        version: 3.7.4
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+    devDependencies:
+      '@faker-js/faker':
+        specifier: ^10.2.0
+        version: 10.2.0
+      bun-types:
+        specifier: latest
+        version: 1.3.5
+
+packages:
+
+  '@faker-js/faker@10.2.0':
+    resolution: {integrity: sha512-rTXwAsIxpCqzUnZvrxVh3L0QA0NzToqWBLAhV+zDV3MIIwiQhAZHMdPCIaj5n/yADu/tyk12wIPgL6YHGXJP+g==}
+    engines: {node: ^20.19.0 || ^22.13.0 || ^23.5.0 || >=24.0.0, npm: '>=10'}
+
+  '@types/node@25.0.6':
+    resolution: {integrity: sha512-NNu0sjyNxpoiW3YuVFfNz7mxSQ+S4X2G28uqg2s+CzoqoQjLPsWSbsFFyztIAqt2vb8kfEAsJNepMGPTxFDx3Q==}
+
+  bun-types@1.3.5:
+    resolution: {integrity: sha512-inmAYe2PFLs0SUbFOWSVD24sg1jFlMPxOjOSSCYqUgn4Hsc3rDc7dFvfVYjFPNHtov6kgUeulV4SxbuIV/stPw==}
+
+  prettier@3.7.4:
+    resolution: {integrity: sha512-v6UNi1+3hSlVvv8fSaoUbggEM5VErKmmpGA7Pl3HF8V6uKY7rvClBOJlH6yNwQtfTueNkGVpOv/mtWL9L4bgRA==}
+    engines: {node: '>=14'}
+    hasBin: true
+
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
+  undici-types@7.16.0:
+    resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
+
+snapshots:
+
+  '@faker-js/faker@10.2.0': {}
+
+  '@types/node@25.0.6':
+    dependencies:
+      undici-types: 7.16.0
+
+  bun-types@1.3.5:
+    dependencies:
+      '@types/node': 25.0.6
+
+  prettier@3.7.4: {}
+
+  typescript@5.9.3: {}
+
+  undici-types@7.16.0: {}
