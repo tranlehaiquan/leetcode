@@ -1,5 +1,5 @@
-import { faker } from "@faker-js/faker";
-import { binarySearch } from "../../binarySearch";
+import { faker } from '@faker-js/faker';
+import { binarySearch } from '../../binarySearch';
 
 const binaryInventory = () => {
   const inventory: string[] = [];

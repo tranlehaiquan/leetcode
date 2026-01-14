@@ -17,7 +17,7 @@ export const largestPermutationFirst = (arr: number[], k: number): number[] => {
       pre[value] = index;
       return pre;
     },
-    {}
+    {},
   );
 
   let i = 0;
@@ -52,10 +52,10 @@ export const largestPermutation = (arr: number[], k: number): number[] => {
       pre[value] = index;
       return pre;
     },
-    {}
+    {},
   );
 
-  while(k > 0 && i < arr.length) {
+  while (k > 0 && i < arr.length) {
     if (arr[i] !== max) {
       const key = valueToKey[max];
       valueToKey[max] = i;

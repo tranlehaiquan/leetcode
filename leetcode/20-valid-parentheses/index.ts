@@ -1,13 +1,13 @@
 // https://leetcode.com/problems/valid-parentheses/
 
 const PAIR: { [key: string]: string } = {
-  "(": ")",
-  "[": "]",
-  "{": "}",
+  '(': ')',
+  '[': ']',
+  '{': '}',
 };
 
 export function isValid(s: string): boolean {
-  let chain = "";
+  let chain = '';
 
   for (let x = 0; x <= s.length; x++) {
     const letter: string = s[x];
@@ -40,7 +40,7 @@ export function isValid(s: string): boolean {
 
 // Input: s = "()"
 
-isValid("()");
+isValid('()');
 
 // Output: true
 
@@ -48,7 +48,7 @@ isValid("()");
 
 // Input: s = "()[]{}"
 
-isValid("()[]{}");
+isValid('()[]{}');
 
 // Output: true
 
@@ -56,7 +56,7 @@ isValid("()[]{}");
 
 // Input: s = "(]"
 
-isValid("(]");
+isValid('(]');
 
 // Output: false
 
@@ -64,6 +64,6 @@ isValid("(]");
 
 // Input: s = "([])"
 
-isValid("([])");
+isValid('([])');
 
 // Output: true

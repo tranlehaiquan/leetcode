@@ -14,7 +14,7 @@ const majorityElement = (arr: number[]): number | undefined => {
   const majority = Math.floor(arr.length / 2);
   let result;
 
-  for(const key in dictionary) {
+  for (const key in dictionary) {
     if (dictionary[key] > majority) {
       result = Number(key);
       break;

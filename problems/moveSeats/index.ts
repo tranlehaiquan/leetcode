@@ -3,7 +3,7 @@
 // • Constraints
 // • 1 < N < 1e6
 
-import sumNumbers from "../../utils/sumNumbers";
+import sumNumbers from '../../utils/sumNumbers';
 
 // Example:
 // Input: "..x..x."
@@ -14,9 +14,9 @@ import sumNumbers from "../../utils/sumNumbers";
 // "..xx..." OR "....xx."
 
 const moveSeats = (seats: string): number => {
-  const listSeat = seats.split("");
+  const listSeat = seats.split('');
   const seatHavePeople = listSeat.reduce<number[]>((acc, curr, index) => {
-    if (curr === "x") {
+    if (curr === 'x') {
       acc.push(index);
     }
     return acc;

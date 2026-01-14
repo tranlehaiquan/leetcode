@@ -29,12 +29,12 @@ const LinkedList = <T>() => {
     }
 
     return list;
-  }
+  };
 
   return {
     add,
     getList,
-  }
-}
+  };
+};
 
 export default LinkedList;

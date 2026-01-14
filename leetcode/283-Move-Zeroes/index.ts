@@ -28,7 +28,7 @@ export function moveZeroes(nums: number[]) {
   return nums;
 }
 
-console.log(moveZeroes([0, 1, 0, 3, 12]))
+console.log(moveZeroes([0, 1, 0, 3, 12]));
 
 // [0,1,0,3,12]
 // 0, 1 -> [1,0,0,3,12]

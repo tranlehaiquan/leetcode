@@ -1,7 +1,7 @@
 // use case: using to find shortest (operation) path between two nodes in a graph
 // keywords: queue, breadth first search, shortest path
 
-import findPathChildToParent from "../utils/findPathChildToParent";
+import findPathChildToParent from '../utils/findPathChildToParent';
 
 type Graph = {
   [key: string]: string[];
@@ -17,7 +17,7 @@ type Graph = {
 const breadthFirstSearch = (
   graph: Graph,
   start: string,
-  end: string
+  end: string,
 ): number => {
   const visited = new Set();
   const queue: string[] = [start];
@@ -48,7 +48,7 @@ const breadthFirstSearch = (
 export const breadthFirstSearchPath = (
   graph: Graph,
   start: string,
-  end: string
+  end: string,
 ): string[] => {
   const visited = new Set();
   const queue: string[] = [start];

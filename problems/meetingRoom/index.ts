@@ -12,7 +12,7 @@
 
 const meetingRoom = (intervals: number[][]): number => {
   const intervalsSorted = intervals.sort(
-    (first, second) => first[0] - second[0]
+    (first, second) => first[0] - second[0],
   );
   const rooms = [];
 
@@ -52,13 +52,13 @@ export const meetingRoom2 = (intervals: number[][]): number => {
 
       return acc;
     },
-    {}
+    {},
   );
 
   const keysSorted = Object.keys(intervalByKey).sort(
-    (a, b) => Number(a) - Number(b)
+    (a, b) => Number(a) - Number(b),
   );
-    
+
   let currentRoom = 0;
   keysSorted.forEach((time) => {
     const numberOfRoom = intervalByKey[time];

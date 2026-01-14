@@ -2,13 +2,13 @@ export const MAX_MESSAGE_LENGTH = 50;
 
 const splitMessage = (
   msg: string,
-  chunkSize: number = MAX_MESSAGE_LENGTH
+  chunkSize: number = MAX_MESSAGE_LENGTH,
 ): string[] => {
   // base case
   if (msg.length <= chunkSize) return [msg];
 
   // split message into words
-  const words = msg.split(" ");
+  const words = msg.split(' ');
   const chunkMessages: string[] = [];
 
   // loop through words to get chunkMessages (no number) (n)
@@ -40,8 +40,8 @@ const splitMessage = (
   // chunkMessages.map((i, index) => `${index + 1}/${'x'.repeat(possibleTotalChunkStringLength)} ${i}`);
   for (let x = 0; x < chunkMessages.length; x++) {
     const chunkMessage = chunkMessages[x];
-    let chunkMessageWithNumber: string = `${x + 1}/${"x".repeat(
-      possibleTotalChunkStringLength
+    let chunkMessageWithNumber: string = `${x + 1}/${'x'.repeat(
+      possibleTotalChunkStringLength,
     )} ${chunkMessage}`;
 
     // handle if chunkMessageWithNumber more than chunkSize
@@ -49,7 +49,7 @@ const splitMessage = (
       // message need to move
       let indexSplit = chunkSize - 1;
 
-      while (chunkMessageWithNumber[indexSplit] !== " " && indexSplit > 0) {
+      while (chunkMessageWithNumber[indexSplit] !== ' ' && indexSplit > 0) {
         indexSplit--;
       }
 
@@ -69,9 +69,9 @@ const splitMessage = (
   // replace x with chunkMessagesWithNumber length
   const chunkMessagesWithNumberWithLength = chunkMessagesWithNumber.map((i) =>
     i.replace(
-      "x".repeat(possibleTotalChunkStringLength),
-      chunkMessagesWithNumber.length.toString()
-    )
+      'x'.repeat(possibleTotalChunkStringLength),
+      chunkMessagesWithNumber.length.toString(),
+    ),
   );
 
   return chunkMessagesWithNumberWithLength;

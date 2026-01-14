@@ -1,7 +1,7 @@
-import searchMatrix from ".";
+import searchMatrix from '.';
 
-describe("Search a 2D Matrix", () => {
-  it("example 1", () => {
+describe('Search a 2D Matrix', () => {
+  it('example 1', () => {
     const matrix = [
       [1, 3, 5, 7],
       [10, 11, 16, 20],
@@ -12,7 +12,7 @@ describe("Search a 2D Matrix", () => {
     expect(result).toBe(true);
   });
 
-  it("example 2", () => {
+  it('example 2', () => {
     const matrix = [
       [1, 3, 5, 7],
       [10, 11, 16, 20],
@@ -24,7 +24,7 @@ describe("Search a 2D Matrix", () => {
   });
 
   // performance test case
-  it("performance test case", () => {
+  it('performance test case', () => {
     const matrix = Array.from({ length: 100 }, (_, i) =>
       Array.from({ length: 100 }, (_, j) => i * 100 + j + 1),
     );

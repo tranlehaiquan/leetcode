@@ -63,11 +63,11 @@ export const functionName = (params: Type[]): ReturnType => {
 ### Test Structure
 
 ```typescript
-import { describe, it, expect } from "vitest";
-import { functionName } from "./index";
+import { describe, it, expect } from 'vitest';
+import { functionName } from './index';
 
-describe("functionName", () => {
-  it("should handle basic case", () => {
+describe('functionName', () => {
+  it('should handle basic case', () => {
     expect(functionName(input)).toBe(expected);
   });
   // Multiple test cases covering edge cases

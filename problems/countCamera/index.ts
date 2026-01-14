@@ -24,8 +24,8 @@ const solution = (s: string): number => {
   // total cars right = 0;
   // find total cars Lefts
   let totalCarsRight = 0;
-  let totalCarsLeft = s.split("").reduce((pre, curr) => {
-    if (curr === "<") return pre + 1;
+  let totalCarsLeft = s.split('').reduce((pre, curr) => {
+    if (curr === '<') return pre + 1;
     return pre;
   }, 0);
 
@@ -39,13 +39,13 @@ const solution = (s: string): number => {
   for (let i = 0; i < s.length; i++) {
     const item = s[i];
 
-    if (item === ".") {
+    if (item === '.') {
       result += totalCarsLeft + totalCarsRight;
     }
-    if (item === "<") {
+    if (item === '<') {
       totalCarsLeft -= 1;
     }
-    if (item === ">") {
+    if (item === '>') {
       totalCarsRight += 1;
     }
   }

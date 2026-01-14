@@ -83,8 +83,8 @@ function solution(s: string, b: number): number {
   return numbers.size;
 }
 
-console.log(solution("1234", 1)); // output: 4
-console.log(solution("123456", 1)); // output: 6
-console.log(solution("223456", 2)); // output: 3
-console.log(solution("111111", 2)); // output: 1
-console.log(solution("111011", 2)); // output:
+console.log(solution('1234', 1)); // output: 4
+console.log(solution('123456', 1)); // output: 6
+console.log(solution('223456', 2)); // output: 3
+console.log(solution('111111', 2)); // output: 1
+console.log(solution('111011', 2)); // output:

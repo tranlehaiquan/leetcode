@@ -3,12 +3,12 @@
 const solution = (
   connections: string[],
   name1: string,
-  name2: string
+  name2: string,
 ): number => {
   const graph: { [key: string]: string[] } = {};
   // build a graph
   for (let connection of connections) {
-    const [left, right] = connection.split(":");
+    const [left, right] = connection.split(':');
     if (!graph[left]) {
       graph[left] = [right];
     } else {
@@ -28,12 +28,12 @@ const solution = (
 
   while (queue.length) {
     let size = queue.length;
-    for(let x = 0; x < size; x++) {
+    for (let x = 0; x < size; x++) {
       const person = queue.shift() as string;
       if (person === name2) {
         return degrees;
       }
-  
+
       if (!searched.includes(person)) {
         const personFriends = graph[person];
         queue.push(...personFriends);

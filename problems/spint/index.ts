@@ -9,7 +9,7 @@ type Reel = {
   display(): string;
 };
 
-const symbols = ["X", "Y", "Z", "W", "$", "*", "<", "@"];
+const symbols = ['X', 'Y', 'Z', 'W', '$', '*', '<', '@'];
 
 const reel: Reel = {
   position: null,
@@ -59,7 +59,7 @@ const slotMachine = {
 
           return temp.display();
         })
-        .join(" | ");
+        .join(' | ');
       console.log(result);
     }
   },
@@ -69,5 +69,5 @@ for (let x = 0; x < 10; x++) {
   slotMachine.spin();
   slotMachine.display();
 
-  console.log('---new---')
+  console.log('---new---');
 }

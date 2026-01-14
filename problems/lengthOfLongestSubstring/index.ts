@@ -24,7 +24,7 @@
  * @return {number}
  */
 const lengthOfLongestSubstring = (s: string): number => {
-  if(!s) return 0;
+  if (!s) return 0;
 
   let result = 1;
   let left = 0;
@@ -33,7 +33,7 @@ const lengthOfLongestSubstring = (s: string): number => {
     const current = s[r];
     const subStr = s.slice(left, r);
     const indexOfR = subStr.indexOf(current);
-  
+
     if (indexOfR >= 0) {
       left += indexOfR + 1;
     } else {

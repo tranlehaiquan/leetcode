@@ -6,7 +6,7 @@
 
 const assignMiceToHoles = (
   mice: number[],
-  holes: number[]
+  holes: number[],
 ): number | undefined => {
   if (!mice.length) return;
 

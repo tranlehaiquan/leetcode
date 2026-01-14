@@ -2,7 +2,10 @@
 
 class Node<T> {
   public next: Node<T> | null = null;
-  constructor(public data: T, next?: Node<T>) {
+  constructor(
+    public data: T,
+    next?: Node<T>,
+  ) {
     this.data = data;
     this.next = next || null;
   }

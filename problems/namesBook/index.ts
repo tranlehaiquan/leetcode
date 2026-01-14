@@ -3,7 +3,7 @@
  * Array will have 26 slots for each letter of the alphabet
  * In each slot will be linked list of names
  */
-import LinkedList from "../../data-structure/linkedList";
+import LinkedList from '../../data-structure/linkedList';
 
 const namesBook = () => {
   // name book is an array of 26 slots alphabetically a - z

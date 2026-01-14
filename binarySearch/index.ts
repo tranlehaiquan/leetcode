@@ -1,12 +1,12 @@
 /**
  * binary search a sorted array
  * return the index of the number if found or -1 if not found
- * 
+ *
  * Assume: arr is sorted
  */
 export const binarySearch = (
   arr: number[] | string[],
-  search: number | string
+  search: number | string,
 ) => {
   let left = 0;
   let right = arr.length - 1;
@@ -32,7 +32,7 @@ export const binarySearch = (
 export const binarySearchRecursion = (
   arr: number[] | string[],
   search: number | string,
-  offset: number = 0
+  offset: number = 0,
 ): number => {
   const middle = Math.floor(arr.length / 2);
   // base case
@@ -46,7 +46,7 @@ export const binarySearchRecursion = (
     return binarySearchRecursion(
       arr.slice(middle + 1),
       search,
-      offset + middle + 1
+      offset + middle + 1,
     );
 
   return -1;

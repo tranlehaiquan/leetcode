@@ -1,4 +1,4 @@
-import findPathChildToParent from "../utils/findPathChildToParent";
+import findPathChildToParent from '../utils/findPathChildToParent';
 
 type Graph = {
   [key: string]: {
@@ -10,7 +10,7 @@ type CostTable = { [key: string]: number };
 
 const findTheNextCheapestNode = (
   cost: CostTable,
-  nodeProcessed: string[]
+  nodeProcessed: string[],
 ): string | undefined => {
   const keys = Object.keys(cost);
   const keysNotProcessed = keys.filter((key) => !nodeProcessed.includes(key));
@@ -27,7 +27,7 @@ const findTheNextCheapestNode = (
 export const solutionFull = (
   graph: Graph,
   start: string,
-  end: string
+  end: string,
 ): { path: string[]; cost: number } => {
   const childParent: { [key: string]: string } = {};
   const costTable: { [key: string]: number } = {

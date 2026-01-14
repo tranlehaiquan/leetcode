@@ -1,7 +1,7 @@
 // https://leetcode.com/problems/maximize-the-number-of-partitions-after-operations/?envType=daily-question&envId=2025-10-17
 function maxPartitionsAfterOperations(s: string, k: number): number {
   let updateS = [...s];
-  const letters = new Set(s.split(""));
+  const letters = new Set(s.split(''));
   if (letters.size + 1 <= k) return 1;
 
   // start, end
@@ -14,7 +14,7 @@ function maxPartitionsAfterOperations(s: string, k: number): number {
   let right = k - 1;
   while (canUpdate) {
     const stbString = s.slice(left, right); // todo
-    const lettersSub = new Set(stbString.split(""));
+    const lettersSub = new Set(stbString.split(''));
     console.log({
       left,
       right,

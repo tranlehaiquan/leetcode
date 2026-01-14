@@ -68,7 +68,7 @@ export const isValidPhoneNumber = (s: string) => {
   // second solution
   if (s.length !== 11) return false;
 
-  const numberGroup = s.split("-");
+  const numberGroup = s.split('-');
   const isValid = !numberGroup.some((i) => isNaN(+i));
   return isValid;
 };

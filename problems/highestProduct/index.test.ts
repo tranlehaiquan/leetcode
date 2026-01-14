@@ -1,7 +1,7 @@
-import hightestProduct from ".";
+import hightestProduct from '.';
 
-describe("hightestProduct", () => {
-  it("should return the highest product of 3 numbers", () => {
+describe('hightestProduct', () => {
+  it('should return the highest product of 3 numbers', () => {
     expect(hightestProduct([1, 2, 3])).toEqual(6);
     expect(hightestProduct([1, 2, 3, 4])).toEqual(24);
     expect(hightestProduct([1, 2, 3, 4, 5])).toEqual(60);
@@ -13,7 +13,9 @@ describe("hightestProduct", () => {
   });
 
   // array have multiple negative numbers
-  it("should return the highest with array have multiple negative numbers", () => {
-    expect(hightestProduct([1, 2, 3, -4, -5, -6, -7, -8, -9, -10, 10, 11])).toEqual(990);
+  it('should return the highest with array have multiple negative numbers', () => {
+    expect(
+      hightestProduct([1, 2, 3, -4, -5, -6, -7, -8, -9, -10, 10, 11]),
+    ).toEqual(990);
   });
 });

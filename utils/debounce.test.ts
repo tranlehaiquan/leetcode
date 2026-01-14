@@ -1,11 +1,11 @@
-import debounce from "./debounce";
-import delay from "./delay";
+import debounce from './debounce';
+import delay from './delay';
 
-describe("test debounce", () => {
-  test("test debounce", async () => {
+describe('test debounce', () => {
+  test('test debounce', async () => {
     let i = 0;
     const increaseFnc = () => {
-      console.log("increase");
+      console.log('increase');
       ++i;
     };
 
@@ -24,8 +24,8 @@ describe("test debounce", () => {
     expect(i).toBe(2);
   });
 
-  test("test case typing", async () => {
-    let search = "";
+  test('test case typing', async () => {
+    let search = '';
     const handleSearch = (input: string) => {
       console.log(`Search ${input}`);
       search = input;

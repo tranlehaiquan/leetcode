@@ -12,7 +12,7 @@
 const distribute = (ratings: number[]): number => {
   let candies: number[] = [];
   const keyValuePair = Object.entries(ratings).sort(
-    (first, second) => first[1] - second[1]
+    (first, second) => first[1] - second[1],
   );
 
   for (let x = 0; x < keyValuePair.length; x++) {

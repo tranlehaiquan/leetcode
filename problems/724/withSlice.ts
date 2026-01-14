@@ -6,8 +6,6 @@
 
 // Return the leftmost pivot index. If no such index exists, return -1.
 
- 
-
 // Example 1:
 
 // Input: nums = [1,7,3,6,5,6]
@@ -30,28 +28,28 @@
 // The pivot index is 0.
 // Left sum = 0 (no elements to the left of index 0)
 // Right sum = nums[1] + nums[2] = 1 + -1 = 0
- 
 
 // Constraints:
 
 // 1 <= nums.length <= 104
 // -1000 <= nums[i] <= 1000
- 
 
 // Note: This question is the same as 1991: https://leetcode.com/problems/find-the-middle-index-in-array/
 
-var pivotIndex = function(nums) {
+var pivotIndex = function (nums) {
   let result = -1;
 
-  for(let x = 0; x < nums.length; x++) {
-          const totalLeft = nums.slice(0, x).reduce((acc, curr) => acc + curr, 0)
-          const totalRight = nums.slice(x + 1, nums.length).reduce((acc, curr) => acc + curr, 0)
+  for (let x = 0; x < nums.length; x++) {
+    const totalLeft = nums.slice(0, x).reduce((acc, curr) => acc + curr, 0);
+    const totalRight = nums
+      .slice(x + 1, nums.length)
+      .reduce((acc, curr) => acc + curr, 0);
 
-          if(totalLeft === totalRight) {
-              result = x;
-              break;
-          }
+    if (totalLeft === totalRight) {
+      result = x;
+      break;
+    }
   }
-  
+
   return result;
 };

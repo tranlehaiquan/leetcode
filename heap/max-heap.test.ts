@@ -1,7 +1,7 @@
-import MaxHeap from "./max-heap";
+import MaxHeap from './max-heap';
 
-describe("MaxHeap", () => {
-  it("should create a max heap from an unsorted array", () => {
+describe('MaxHeap', () => {
+  it('should create a max heap from an unsorted array', () => {
     const list = [3, 1, 4, 1, 5, 9, 2, 6, 5];
     const heap = new MaxHeap(list);
 
@@ -11,7 +11,7 @@ describe("MaxHeap", () => {
     expect(heap.extractMax()).toEqual(5);
   });
 
-  it("should insert elements correctly", () => {
+  it('should insert elements correctly', () => {
     const heap = new MaxHeap([]);
 
     heap.insert(10);

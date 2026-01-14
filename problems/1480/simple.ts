@@ -2,8 +2,6 @@
 
 // Return the running sum of nums.
 
- 
-
 // Example 1:
 
 // Input: nums = [1,2,3,4]
@@ -18,20 +16,18 @@
 
 // Input: nums = [3,1,2,10,1]
 // Output: [3,4,6,16,17]
- 
 
 // Constraints:
 
 // 1 <= nums.length <= 1000
 // -10^6 <= nums[i] <= 10^6
-var runningSum = function(nums: number[]) {
+var runningSum = function (nums: number[]) {
   let result: number[] = [];
-  
-  for(let x = 0; x < nums.length; x++){
-      const prevNum = result[x - 1] || 0;
-      result.push(prevNum + nums[x])
-  }
-  
-  return result
-};
 
+  for (let x = 0; x < nums.length; x++) {
+    const prevNum = result[x - 1] || 0;
+    result.push(prevNum + nums[x]);
+  }
+
+  return result;
+};
