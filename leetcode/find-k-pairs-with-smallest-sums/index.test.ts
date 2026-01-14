@@ -10,4 +10,14 @@ describe('kSmallestPairs', () => {
       [1, 6],
     ]);
   });
+
+  test('[1,2,4,5,6], [3,5,7,9], k = 3', () => {
+    const result = kSmallestPairs([1, 2, 4, 5, 6], [3, 5, 7, 9], 3);
+
+    expect(result).toEqual([
+      [1, 3],
+      [2, 3],
+      [1, 5],
+    ]);
+  });
 });

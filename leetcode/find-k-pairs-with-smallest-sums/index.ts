@@ -1,34 +1,107 @@
-// You are given two integer arrays nums1 and nums2 sorted in non-decreasing order and an integer k.
-// Define a pair (u, v) which consists of one element from the first array and one element from the second array.
-// Return the k pairs (u1, v1), (u2, v2), ..., (uk, vk) with the smallest sums.
+class MinHeap<T> {
+  private heap: T[] = [];
+  private compareFn: (a: T, b: T) => boolean;
 
-// Example 1:
-// Input: nums1 = [1,7,11], nums2 = [2,4,6], k = 3
-// Output: [[1,2],[1,4],[1,6]]
-// Explanation: The first 3 pairs are returned from the sequence: [1,2],[1,4],[1,6],[7,2],[7,4],[11,2],[7,6],[11,4],[11,6]
-// Example 2:
+  constructor(compareFn: (a: T, b: T) => boolean, array: T[] = []) {
+    this.compareFn = compareFn;
+    this.heap = array;
 
-// Input: nums1 = [1,1,2], nums2 = [1,2,3], k = 2
-// Output: [[1,1],[1,1]]
-// Explanation: The first 2 pairs are returned from the sequence: [1,1],[1,1],[1,2],[2,1],[1,2],[2,2],[1,3],[1,3],[2,3]
+    // Start from the last parent and work backwards
+    const lastParent = Math.floor((this.heap.length - 1) / 2);
 
-// Constraints:
-// 1 <= nums1.length, nums2.length <= 105
-// -109 <= nums1[i], nums2[i] <= 109
-// nums1 and nums2 both are sorted in non-decreasing order.
-// 1 <= k <= 104
-// k <= nums1.length * nums2.length
+    for (let i = lastParent; i >= 0; i--) {
+      this.bubbleDown(i);
+    }
+  }
+
+  insert(val: T): void {
+    this.heap.push(val);
+    this.bubbleUp(this.heap.length - 1);
+  }
+
+  extractMin(): T | undefined {
+    if (this.heap.length === 0) return undefined;
+    const min = this.heap[0];
+    const last = this.heap.pop();
+    if (this.heap.length > 0 && last !== undefined) {
+      this.heap[0] = last;
+      this.bubbleDown(0);
+    }
+    return min;
+  }
+
+  private bubbleUp(index: number): void {
+    while (index > 0) {
+      const parent = Math.floor((index - 1) / 2);
+      if (this.compareFn(this.heap[parent], this.heap[index])) break;
+      this.swap(parent, index);
+      index = parent;
+    }
+  }
+
+  private bubbleDown(index: number) {
+    while (true) {
+      let best = index;
+      const left = index * 2 + 1;
+      const right = index * 2 + 2;
+
+      if (
+        left < this.heap.length &&
+        this.compareFn(this.heap[left], this.heap[best])
+      ) {
+        best = left;
+      }
+      if (
+        right < this.heap.length &&
+        this.compareFn(this.heap[right], this.heap[best])
+      ) {
+        best = right;
+      }
+      if (best === index) break;
+      this.swap(best, index);
+      index = best;
+    }
+  }
+
+  private swap(i: number, j: number) {
+    [this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]];
+  }
+
+  get size(): number {
+    return this.heap.length;
+  }
+}
+
+//         2    4    6
+//       ----------------
+// 1   |   3    5    7
+// 7   |   9   11   13
+// 11  |  13   15   17
 
 function kSmallestPairs(
   nums1: number[],
   nums2: number[],
   k: number,
 ): number[][] {
-  return [
-    [1, 2],
-    [1, 4],
-    [1, 6],
-  ];
+  const r: number[][] = [];
+  const minHeap = new MinHeap<[number, number, number]>((a, b) => a[0] <= b[0]);
+
+  // first loop
+  for (let i = 0; i < Math.min(nums1.length, k); i++) {
+    minHeap.insert([nums1[i] + nums2[0], i, 0]);
+  }
+
+  while (k > 0 && minHeap.size > 0) {
+    const [, i, j] = minHeap.extractMin();
+    r.push([nums1[i], nums2[j]]);
+
+    if (j + 1 < nums2.length) {
+      minHeap.insert([nums1[i] + nums2[j + 1], i, j + 1]);
+    }
+    k--;
+  }
+
+  return r;
 }
 
 export default kSmallestPairs;

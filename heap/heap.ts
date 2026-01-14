@@ -1,8 +1,10 @@
-class MaxHeap {
+class Heap {
   private heap: number[];
+  private compareFn: (a: number, b: number) => boolean;
 
-  constructor(array: number[]) {
+  constructor(array: number[], compareFn: (a: number, b: number) => boolean) {
     this.heap = array;
+    this.compareFn = compareFn;
     // Start from the last parent and work backwards
     const lastParent = Math.floor((this.heap.length - 1) / 2);
 
@@ -40,13 +42,14 @@ class MaxHeap {
   // bubbleUp index: number
   // heapify
   private bubbleUp(index: number): void {
-    while (
-      index > 0 &&
-      this.heap[this.getParentIndex(index)] < this.heap[index]
-    ) {
-      const parentIndex = this.getParentIndex(index);
-      this.swap(parentIndex, index);
-      index = parentIndex;
+    while (index > 0) {
+      const parent = this.getParentIndex(index);
+
+      // If the parent is ALREADY correct (compareFn returns true), stop.
+      if (this.compareFn(this.heap[parent], this.heap[index])) break;
+
+      this.swap(parent, index);
+      index = parent;
     }
   }
 
@@ -71,27 +74,55 @@ class MaxHeap {
     const length = this.heap.length;
 
     while (true) {
-      let largest = index;
+      let bestIndex = index;
       const left = this.getLeftChildIndex(index);
       const right = this.getRightChildIndex(index);
 
-      if (left < length && this.heap[left] > this.heap[largest]) {
-        largest = left;
+      if (
+        left < length &&
+        this.compareFn(this.heap[left], this.heap[bestIndex])
+      ) {
+        bestIndex = left;
       }
 
-      if (right < length && this.heap[right] > this.heap[largest]) {
-        largest = right;
+      // check if right child is "better" than current best
+      if (
+        right < length &&
+        this.compareFn(this.heap[right], this.heap[bestIndex])
+      ) {
+        bestIndex = right;
       }
 
-      if (largest == index) break;
-      this.swap(largest, index);
-      index = largest;
+      if (bestIndex == index) break;
+      this.swap(bestIndex, index);
+      index = bestIndex;
     }
   }
 
   public get size(): number {
     return this.heap.length;
   }
+
+  public peek() {
+    return this.heap[0];
+  }
 }
 
-export default MaxHeap;
+const maxHeapCompare = (a: number, b: number) => a > b;
+const minHeapCompare = (a: number, b: number) => a < b;
+
+class MaxHeap extends Heap {
+  constructor(array: number[] = []) {
+    super(array, maxHeapCompare);
+  }
+}
+
+class MinHeap extends Heap {
+  constructor(array: number[] = []) {
+    super(array, minHeapCompare);
+  }
+}
+
+export { MaxHeap, MinHeap };
+
+export default Heap;
