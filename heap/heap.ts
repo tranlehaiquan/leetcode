@@ -57,9 +57,9 @@ class Heap {
     return this.heap.toString();
   }
 
-  extractMax(): number | undefined {
+  extract(): number | undefined {
     if (!this.heap.length) return undefined;
-    const max = this.heap[0];
+    const root = this.heap[0];
     const last = this.heap.pop();
 
     if (this.heap.length > 0 && last != undefined) {
@@ -67,7 +67,7 @@ class Heap {
       this.bubbleDown(0);
     }
 
-    return max;
+    return root;
   }
 
   private bubbleDown(index: number) {
