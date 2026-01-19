@@ -30,15 +30,4 @@ function isPossible(target: number[]): boolean {
   return total === target.length;
 }
 
-// [9, 3, 5], total = 17
-// max=9, rest=8
-
-// [2, 9], t=11
-// max=9, rest=2
-// [2, 7]
-// [2, 5]
-// [2, 3]
-// [2, 1]
-// [1, 1]
-
 export default isPossible;
