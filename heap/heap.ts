@@ -1,8 +1,8 @@
-class Heap {
-  private heap: number[];
-  private compareFn: (a: number, b: number) => boolean;
+class Heap<T> {
+  private heap: T[];
+  private compareFn: (a: T, b: T) => boolean;
 
-  constructor(array: number[], compareFn: (a: number, b: number) => boolean) {
+  constructor(array: T[], compareFn: (a: T, b: T) => boolean) {
     this.heap = array;
     this.compareFn = compareFn;
     // Start from the last parent and work backwards
@@ -34,7 +34,7 @@ class Heap {
   }
 
   // insert value: number
-  insert(num: number): void {
+  insert(num: T): void {
     this.heap.push(num);
     this.bubbleUp(this.heap.length - 1);
   }
@@ -57,7 +57,7 @@ class Heap {
     return this.heap.toString();
   }
 
-  extract(): number | undefined {
+  extract(): T | undefined {
     if (!this.heap.length) return undefined;
     const root = this.heap[0];
     const last = this.heap.pop();
@@ -111,13 +111,13 @@ class Heap {
 const maxHeapCompare = (a: number, b: number) => a > b;
 const minHeapCompare = (a: number, b: number) => a < b;
 
-class MaxHeap extends Heap {
+class MaxHeap extends Heap<number> {
   constructor(array: number[] = []) {
     super(array, maxHeapCompare);
   }
 }
 
-class MinHeap extends Heap {
+class MinHeap extends Heap<number> {
   constructor(array: number[] = []) {
     super(array, minHeapCompare);
   }
