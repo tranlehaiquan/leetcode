@@ -1,17 +1,4 @@
-function licenseKeyFormatting(s: string, k: number): string {
-  const letters = s
-    .split('')
-    .map((i) => i.toUpperCase())
-    .filter((i) => i != '-');
-  let result = [];
-  const leng = letters.length;
-  if (!leng) return '';
-  for (let i = leng - 1; i >= 0; i -= k) {
-    result.unshift(letters.slice(Math.max(i + 1 - k, 0), i + 1).join(''));
-  }
-
-  return result.join('-');
-}
+import { licenseKeyFormatting } from './index';
 
 describe('licenseKeyFormatting', () => {
   test('case 1', () => {
