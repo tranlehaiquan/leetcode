@@ -6,7 +6,6 @@ describe('MaxHeap', () => {
     const heap = new MaxHeap(list);
 
     expect(heap.size).toEqual(list.length);
-    console.log(heap);
     expect(heap.extract()).toEqual(9);
     expect(heap.extract()).toEqual(6);
     expect(heap.extract()).toEqual(5);

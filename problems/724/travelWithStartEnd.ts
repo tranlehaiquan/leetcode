@@ -11,7 +11,6 @@ var pivotIndex = function (nums) {
     .reduce((prev, current) => prev + current, 0);
 
   while (start < nums.length) {
-    console.log(left, right);
     if (left === right) {
       return start;
     }

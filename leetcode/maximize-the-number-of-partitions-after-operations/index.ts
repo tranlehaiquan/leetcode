@@ -15,10 +15,6 @@ function maxPartitionsAfterOperations(s: string, k: number): number {
   while (canUpdate) {
     const stbString = s.slice(left, right); // todo
     const lettersSub = new Set(stbString.split(''));
-    console.log({
-      left,
-      right,
-    });
 
     if (lettersSub.size < stbString.length) {
       // update current

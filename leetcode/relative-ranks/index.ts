@@ -53,5 +53,3 @@ export const findRelativeRanks2 = (score: number[]): string[] => {
 
   return result;
 };
-
-console.log(findRelativeRanks2([10, 3, 8, 9, 4]));

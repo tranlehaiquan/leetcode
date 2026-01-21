@@ -64,5 +64,3 @@ a.insert(2);
 a.insert(4);
 a.insert(-4);
 a.insert(10);
-
-console.log(a);

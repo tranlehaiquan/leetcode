@@ -60,7 +60,3 @@ export const maxProductSubArray2 = (numbers: number[]): number => {
 
   return maxSoFar;
 };
-
-console.log(maxProductSubArray2([1, 2, -3, 5, 1])); // 5
-console.log(maxProductSubArray2([9])); // 9
-console.log(maxProductSubArray2([1, 2, 0, -1, 8, -4])); // 32
