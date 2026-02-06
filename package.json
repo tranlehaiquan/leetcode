@@ -6,7 +6,8 @@
   "scripts": {
     "test": "bun test",
     "coverage": "bun test --coverage",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "add-problem": "bun run ./scripts/quick-create-files.ts"
   },
   "author": "",
   "license": "ISC",
