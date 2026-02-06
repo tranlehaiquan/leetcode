@@ -3,7 +3,6 @@
 // xxyz => "xx" => 1
 
 export const countDistinctLetter = (s: string): number => {
-  let result = 0;
   const listDup = [];
 
   for (let x = 0; x < s.length; x++) {
@@ -22,5 +21,5 @@ export const countDistinctLetter = (s: string): number => {
     }
   }
 
-  return result;
+  return listDup.length;
 };
