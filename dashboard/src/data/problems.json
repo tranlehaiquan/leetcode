@@ -1,0 +1,327 @@
+[
+  {
+    "id": "leetcode-find-k-pairs-with-smallest-sums",
+    "name": "find k pairs with smallest sums",
+    "path": "leetcode/find-k-pairs-with-smallest-sums",
+    "type": "leetcode",
+    "code": "class MinHeap<T> {\n  private heap: T[] = [];\n  private compareFn: (a: T, b: T) => boolean;\n\n  constructor(compareFn: (a: T, b: T) => boolean, array: T[] = []) {\n    this.compareFn = compareFn;\n    this.heap = array;\n\n    // Start from the last parent and work backwards\n    const lastParent = Math.floor((this.heap.length - 1) / 2);\n\n    for (let i = lastParent; i >= 0; i--) {\n      this.bubbleDown(i);\n    }\n  }\n\n  insert(val: T): void {\n    this.heap.push(val);\n    this.bubbleUp(this.heap.length - 1);\n  }\n\n  extractMin(): T | undefined {\n    if (this.heap.length === 0) return undefined;\n    const min = this.heap[0];\n    const last = this.heap.pop();\n    if (this.heap.length > 0 && last !== undefined) {\n      this.heap[0] = last;\n      this.bubbleDown(0);\n    }\n    return min;\n  }\n\n  private bubbleUp(index: number): void {\n    while (index > 0) {\n      const parent = Math.floor((index - 1) / 2);\n      if (this.compareFn(this.heap[parent], this.heap[index])) break;\n      this.swap(parent, index);\n      index = parent;\n    }\n  }\n\n  private bubbleDown(index: number) {\n    while (true) {\n      let best = index;\n      const left = index * 2 + 1;\n      const right = index * 2 + 2;\n\n      if (\n        left < this.heap.length &&\n        this.compareFn(this.heap[left], this.heap[best])\n      ) {\n        best = left;\n      }\n      if (\n        right < this.heap.length &&\n        this.compareFn(this.heap[right], this.heap[best])\n      ) {\n        best = right;\n      }\n      if (best === index) break;\n      this.swap(best, index);\n      index = best;\n    }\n  }\n\n  private swap(i: number, j: number) {\n    [this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]];\n  }\n\n  get size(): number {\n    return this.heap.length;\n  }\n}\n\n//         2    4    6\n//       ----------------\n// 1   |   3    5    7\n// 7   |   9   11   13\n// 11  |  13   15   17\n\nfunction kSmallestPairs(\n  nums1: number[],\n  nums2: number[],\n  k: number,\n): number[][] {\n  const r: number[][] = [];\n  const minHeap = new MinHeap<[number, number, number]>((a, b) => a[0] <= b[0]);\n\n  // first loop\n  for (let i = 0; i < Math.min(nums1.length, k); i++) {\n    minHeap.insert([nums1[i] + nums2[0], i, 0]);\n  }\n\n  while (k > 0 && minHeap.size > 0) {\n    const [, i, j] = minHeap.extractMin();\n    r.push([nums1[i], nums2[j]]);\n\n    if (j + 1 < nums2.length) {\n      minHeap.insert([nums1[i] + nums2[j + 1], i, j + 1]);\n    }\n    k--;\n  }\n\n  return r;\n}\n\nexport default kSmallestPairs;\n"
+  },
+  {
+    "id": "leetcode-license-key-formatting",
+    "name": "license key formatting",
+    "path": "leetcode/license-key-formatting",
+    "type": "leetcode",
+    "code": "// https://leetcode.com/problems/license-key-formatting/\n\nexport function licenseKeyFormatting(s: string, k: number): string {\n  const letters = s\n    .split('')\n    .map((i) => i.toUpperCase())\n    .filter((i) => i != '-');\n  let result = [];\n  const leng = letters.length;\n  if (!leng) return '';\n  for (let i = leng - 1; i >= 0; i -= k) {\n    result.unshift(letters.slice(Math.max(i + 1 - k, 0), i + 1).join(''));\n  }\n\n  return result.join('-');\n}\n\nexport function licenseKeyFormatting2(s: string, k: number): string {\n  const cleaned = s.replace(/-/g, '').toUpperCase();\n\n  if (cleaned.length === 0) return '';\n\n  const groups = [];\n  for (let i = cleaned.length; i > 0; i -= k) {\n    groups.unshift(cleaned.substring(Math.max(i - k, 0), i));\n  }\n\n  return groups.join('-');\n}\n"
+  },
+  {
+    "id": "leetcode-minimum-difference-between-highest-and-lowest-of-k-scores",
+    "name": "minimum difference between highest and lowest of k scores",
+    "path": "leetcode/minimum-difference-between-highest-and-lowest-of-k-scores",
+    "type": "leetcode",
+    "code": "// LeetCode Problem: Minimum Difference Between Highest and Lowest of K Scores\n\nfunction minimumDifference(nums: number[], k: number): number {\n  if (nums.length === 0) return 0;\n  if (k === 1) return 0;\n\n  nums.sort((a, b) => a - b);\n  let minDiff = Infinity;\n\n  for (let i = 0; i <= nums.length - k; i++) {\n    minDiff = Math.min(minDiff, nums[i + k - 1] - nums[i]);\n  }\n\n  return minDiff;\n}\n\nexport { minimumDifference };\n"
+  },
+  {
+    "id": "leetcode-number-of-steps-to-reduce-a-number-in-binary-representation-to-one",
+    "name": "number of steps to reduce a number in binary representation to one",
+    "path": "leetcode/number-of-steps-to-reduce-a-number-in-binary-representation-to-one",
+    "type": "leetcode",
+    "code": "function addOneBinary(s: string): string {\n  // 100 -> 101\n  // 1011 -> 1100\n  // 11 -> 100\n  const list = s.split('');\n  if (list[list.length - 1] === '0') {\n    list[list.length - 1] = '1';\n\n    return list.join('');\n  }\n\n  let alreadyAdded = false;\n  for (let i = list.length - 1; i >= 0; i--) {\n    if (list[i] === '1') {\n      list[i] = '0';\n    } else {\n      list[i] = '1';\n      alreadyAdded = true;\n      break;\n    }\n  }\n\n  if (!alreadyAdded) {\n    list.unshift('1');\n  }\n\n  return list.join('');\n}\n\nfunction numSteps(s: string): number {\n  let binaryNum = s;\n  let count = 0;\n  // 1101\n\n  while (binaryNum != '1') {\n    if (binaryNum[binaryNum.length - 1] === '0') {\n      binaryNum = binaryNum.slice(0, -1);\n    } else if (binaryNum[binaryNum.length - 1] === '1') {\n      binaryNum = addOneBinary(binaryNum);\n    }\n    count++;\n  }\n\n  return count;\n}\n\nexport default numSteps;\n"
+  },
+  {
+    "id": "leetcode-maximize-the-number-of-partitions-after-operations",
+    "name": "maximize the number of partitions after operations",
+    "path": "leetcode/maximize-the-number-of-partitions-after-operations",
+    "type": "leetcode",
+    "code": "// https://leetcode.com/problems/maximize-the-number-of-partitions-after-operations/?envType=daily-question&envId=2025-10-17\nfunction maxPartitionsAfterOperations(s: string, k: number): number {\n  let updateS = [...s];\n  const letters = new Set(s.split(''));\n  if (letters.size + 1 <= k) return 1;\n\n  // start, end\n  // Stop when:\n  // canUpdate && k > start - end + 1\n  //  update the last one\n\n  let canUpdate = true;\n  let left = 0;\n  let right = k - 1;\n  while (canUpdate) {\n    const stbString = s.slice(left, right); // todo\n    const lettersSub = new Set(stbString.split(''));\n\n    if (lettersSub.size < stbString.length) {\n      // update current\n      updateS[right] = String.fromCharCode(updateS[right].charCodeAt(0) + 1);\n      canUpdate = false;\n    } else {\n      let next = updateS[right + 1];\n      if (next === updateS[right]) {\n        // update the next\n        // todo handle edge aab -> abb\n        updateS[right + 1] = String.fromCharCode(next.charCodeAt(0) + 1);\n        canUpdate = false;\n      }\n    }\n  }\n\n  let result = 0;\n  let list = new Set();\n  for (let x = 0; x < updateS.length; x++) {\n    if (!list.has(updateS[x])) {\n      list.add(updateS[x]);\n    }\n\n    if (list.size === k) {\n      result++;\n      list.clear();\n    }\n\n    if (x === updateS.length - 1 && list.size > 0) {\n      result++;\n      list.clear();\n    }\n  }\n\n  return result;\n}\n\n// abccab\n// abc\n// ...\n"
+  },
+  {
+    "id": "leetcode-20-valid-parentheses",
+    "name": "20 valid parentheses",
+    "path": "leetcode/20-valid-parentheses",
+    "type": "leetcode",
+    "code": "// https://leetcode.com/problems/valid-parentheses/\n\nconst PAIR: { [key: string]: string } = {\n  '(': ')',\n  '[': ']',\n  '{': '}',\n};\n\nexport function isValid(s: string): boolean {\n  let chain = '';\n\n  for (let x = 0; x <= s.length; x++) {\n    const letter: string = s[x];\n    const isOpen = PAIR[letter];\n\n    if (isOpen) {\n      chain += isOpen;\n      continue;\n    }\n\n    const isLastLetterInChain = chain[chain.length - 1] === letter;\n    if (!isLastLetterInChain) return false;\n\n    chain = chain.slice(0, chain.length - 1);\n  }\n\n  return true;\n}\n\n// ([])\n// chain = )]\n// ] -> check is last? Y -> remove\n// ) -> check is last? Y -> remove\n\n// (]\n// chain = )\n// ] check is last? N -> false\n\n// Example 1:\n\n// Input: s = \"()\"\n\nisValid('()');\n\n// Output: true\n\n// Example 2:\n\n// Input: s = \"()[]{}\"\n\nisValid('()[]{}');\n\n// Output: true\n\n// Example 3:\n\n// Input: s = \"(]\"\n\nisValid('(]');\n\n// Output: false\n\n// Example 4:\n\n// Input: s = \"([])\"\n\nisValid('([])');\n\n// Output: true\n"
+  },
+  {
+    "id": "leetcode-construct-target-array-with-multiple-sums",
+    "name": "construct target array with multiple sums",
+    "path": "leetcode/construct-target-array-with-multiple-sums",
+    "type": "leetcode",
+    "code": "import { MaxHeap } from '../../heap/heap';\n\nfunction isPossible(target: number[]): boolean {\n  let total = target.reduce((a, b) => a + b);\n  const heap = new MaxHeap(target);\n\n  while (total > target.length) {\n    const max = heap.extract();\n    const rest = total - max;\n\n    // Edge cases\n    if (rest === 0 || max <= rest) {\n      return false;\n    }\n\n    let newValue = max % rest;\n\n    // if newValue === 0, it mean max is a multiple of rest\n    // we need at least 1, so use the rest instead\n    if (!newValue) newValue = rest;\n\n    if (newValue < 1) {\n      return false;\n    }\n\n    heap.insert(newValue);\n    total = rest + newValue;\n  }\n\n  return total === target.length;\n}\n\nexport default isPossible;\n"
+  },
+  {
+    "id": "leetcode-Count-Unique-Numbers-After-Rotations",
+    "name": "Count Unique Numbers After Rotations",
+    "path": "leetcode/Count-Unique-Numbers-After-Rotations",
+    "type": "leetcode",
+    "code": "function solution(s: string, b: number): number {\n  if (s.length === 0 || b === 0) return 0;\n\n  let current = s;\n  const numbers = new Set();\n\n  for (let x = 0; x < s.length; x++) {\n    numbers.add(current);\n\n    current = current.slice(-b) + current.slice(0, -b);\n\n    if (current === s) {\n      break;\n    }\n  }\n\n  return numbers.size;\n}\n\nexport default solution;\n"
+  },
+  {
+    "id": "leetcode-best-time-to-buy-and-sell-stock",
+    "name": "best time to buy and sell stock",
+    "path": "leetcode/best-time-to-buy-and-sell-stock",
+    "type": "leetcode",
+    "code": "// LeetCode Problem: best-time-to-buy-and-sell-stock\nexport function maxProfit(prices: number[]): number {\n  let r = 0;\n  // mono stack, increase\n  const stack: number[] = [];\n\n  for (let price of prices) {\n    while (stack.length > 0 && stack[stack.length - 1] > price) {\n      stack.pop();\n    }\n\n    if (stack.length) {\n      r = Math.max(r, price - stack[0]);\n    }\n\n    stack.push(price);\n  }\n\n  return r;\n}\n\nexport function maxProfitTwoPointer(prices: number[]): number {\n  let l = 0,\n    r = 1;\n  let maxP = 0;\n\n  while (r < prices.length) {\n    if (prices[l] < prices[r]) {\n      let profit = prices[r] - prices[l];\n      maxP = Math.max(maxP, profit);\n    } else {\n      l = r;\n    }\n    r++;\n  }\n  return maxP;\n}\n"
+  },
+  {
+    "id": "leetcode-42-trapping-rain-water",
+    "name": "42 trapping rain water",
+    "path": "leetcode/42-trapping-rain-water",
+    "type": "leetcode",
+    "code": "function trap(heights: number[]): number {\n  if (!heights.length) return 0;\n  let total = 0;\n  const stack = [];\n\n  for (let i = heights.length - 1; i >= 0; i--) {\n    const height = heights[i];\n    if (!stack.length) {\n      stack.push(height);\n      continue;\n    }\n\n    let debt = 0;\n    let count = 0;\n    const min = Math.min(stack[0], height);\n    while (height > stack[stack.length - 1]) {\n      count += Math.max(min - stack[stack.length - 1], 0);\n      stack.pop();\n      debt++;\n    }\n    if (stack.length) {\n      stack.push(...new Array(debt).fill(min));\n    }\n    stack.push(height);\n    total += count;\n  }\n\n  return total;\n}\n\nexport function trapTwoPointers(height: number[]): number {\n  if (!height || height.length === 0) {\n    return 0;\n  }\n\n  let l = 0;\n  let r = height.length - 1;\n  let maxL = height[l];\n  let maxR = height[r];\n  let total = 0;\n\n  while (l < r) {\n    if (height[l] < height[r]) {\n      l++;\n      maxL = Math.max(maxL, height[l]);\n      total += maxL - height[l];\n    } else {\n      r--;\n      maxR = Math.max(maxR, height[r]);\n      total += maxR - height[r];\n    }\n  }\n\n  return total;\n}\n\nexport default trap;\n"
+  },
+  {
+    "id": "leetcode-maximum-Product-in-Contiguous-Array",
+    "name": "maximum Product in Contiguous Array",
+    "path": "leetcode/maximum-Product-in-Contiguous-Array",
+    "type": "leetcode",
+    "code": "// Given an array of integers numbers, determine the subarray that has the highest product and return that product.\n\n// A subarray is a contiguous segment of an array where all elements are taken from consecutive indices, preserving their order, such as [2, 3] in [1, 2, 3, 4], while non-contiguous selections like [1, 3] are not valid subarray.\n\n// Input\n// numbers: number[]: An array of integers\n// Notes\n// The test cases are designed such that the result will fit within a 32-bit integer\n// The product of any prefix or suffix of numbers is guaranteed to fit in a 32-bit integer\n// Examples\n// Input: numbers = [1,2,-3,5,1]\n// Output: 5\n// Explanation: The subarray [5, 1] has the largest product i.e 5.\n// Input: numbers = [9]\n// Output: 9\n// Explanation: The single-element subarray [9] has the largest product i.e 9.\n// Input: numbers = [1,2,0,-1,8,-4]\n// Output: 32\n// Explanation: The subarray [-1, 8, -4] has the largest product i.e 32.\n// Constraints\n// 1 <= numbers.length <= 1000\n// -10 <= numbers[i] <= 10\n\nexport default function maxProductSubArray(numbers: number[]): number {\n  if (numbers.length === 1) return numbers[0];\n  let r = 0;\n\n  for (let x = 0; x < numbers.length; x++) {\n    for (let y = x; y < numbers.length; y++) {\n      const subArr = numbers.slice(x, y + 1);\n      const total = subArr.reduce((a, b) => a * b, 1);\n      if (r === undefined) {\n        r = total;\n      } else {\n        r = Math.max(total, r);\n      }\n    }\n  }\n\n  return r;\n}\n\nexport const maxProductSubArray2 = (numbers: number[]): number => {\n  let maxSoFar = numbers[0];\n  let maxEndingHere = numbers[0];\n  let minEndingHere = numbers[0];\n\n  for (let i = 1; i < numbers.length; i++) {\n    const num = numbers[i];\n\n    if (num < 0) {\n      [maxEndingHere, minEndingHere] = [minEndingHere, maxEndingHere];\n    }\n\n    maxEndingHere = Math.max(num, maxEndingHere * num);\n    minEndingHere = Math.min(num, minEndingHere * num);\n\n    maxSoFar = Math.max(maxSoFar, maxEndingHere);\n  }\n\n  return maxSoFar;\n};\n"
+  },
+  {
+    "id": "leetcode-13-Roman-to-Integer",
+    "name": "13 Roman to Integer",
+    "path": "leetcode/13-Roman-to-Integer",
+    "type": "leetcode",
+    "code": "const RomanToNumber: { [key: string]: number } = {\n  I: 1,\n  V: 5,\n  X: 10,\n  L: 50,\n  C: 100,\n  D: 500,\n  M: 1000,\n};\n\nexport function romanToInt(s: string): number {\n  let result = 0;\n\n  for (let x = 0; x < s.length; x++) {\n    const roman = s[x];\n    const currentNumber = RomanToNumber[roman];\n\n    if (x === 0) {\n      result += currentNumber;\n      continue;\n    }\n\n    const previousNumber = RomanToNumber[s[x - 1]];\n    const isSubtract = previousNumber < currentNumber;\n\n    if (isSubtract) {\n      result += currentNumber - previousNumber * 2;\n    } else {\n      result += currentNumber;\n    }\n  }\n\n  return result;\n}\n"
+  },
+  {
+    "id": "leetcode-relative-ranks",
+    "name": "relative ranks",
+    "path": "leetcode/relative-ranks",
+    "type": "leetcode",
+    "code": "import Heap from '../../heap/heap';\n\nconst FIRST = 'Gold Medal';\nconst SECOND = 'Silver Medal';\nconst THIRD = 'Bronze Medal';\n\nexport function findRelativeRanks(score: number[]): string[] {\n  const listScore = [...score].sort((a, b) => b - a);\n  const table: { [key: number]: string } = {};\n  for (let i = 0; i < listScore.length; i++) {\n    table[listScore[i]] = String(i + 1);\n\n    if (i === 0) {\n      table[listScore[i]] = FIRST;\n    }\n    if (i === 1) {\n      table[listScore[i]] = SECOND;\n    }\n    if (i === 2) {\n      table[listScore[i]] = THIRD;\n    }\n  }\n  const result = [];\n\n  for (let i = 0; i < score.length; i++) {\n    result.push(table[score[i]]);\n  }\n\n  return result;\n}\n\nexport const findRelativeRanks2 = (score: number[]): string[] => {\n  const valueWithIndex = score.map((v, index) => ({ value: v, index }));\n  const heap = new Heap(valueWithIndex, (a, b) => a.value > b.value);\n  const result = [];\n  let count = 0;\n  while (heap.size) {\n    const max = heap.extract();\n\n    result[max.index] = String(count + 1);\n    if (count === 0) {\n      result[max.index] = FIRST;\n    }\n    if (count === 1) {\n      result[max.index] = SECOND;\n    }\n    if (count === 2) {\n      result[max.index] = THIRD;\n    }\n\n    count++;\n  }\n\n  return result;\n};\n"
+  },
+  {
+    "id": "leetcode-longest-substring-without-repeating-characters",
+    "name": "longest substring without repeating characters",
+    "path": "leetcode/longest-substring-without-repeating-characters",
+    "type": "leetcode",
+    "code": "// LeetCode Problem: longest-substring-without-repeating-characters\nfunction lengthOfLongestSubstring(s: string): number {\n  const deDupSet = new Set();\n  let max = 0;\n  let l = 0;\n\n  for (let i = 0; i < s.length; i++) {\n    const item = s[i];\n    if (!deDupSet.has(item)) {\n      deDupSet.add(item);\n      max = Math.max(max, deDupSet.size);\n      continue;\n    }\n\n    while (s[l] != item) {\n      deDupSet.delete(s[l]);\n      l++;\n    }\n    l++;\n    max = Math.max(max, deDupSet.size);\n  }\n\n  return max;\n}\n\nexport default lengthOfLongestSubstring;\n"
+  },
+  {
+    "id": "leetcode-78-Subsets",
+    "name": "78 Subsets",
+    "path": "leetcode/78-Subsets",
+    "type": "leetcode",
+    "code": "// 78. Subsets\n// Medium\n// Topics\n// Companies\n// Given an integer array nums of unique elements, return all possible subsets (the power set).\n\n// The solution set must not contain duplicate subsets. Return the solution in any order.\n\n// Example 1:\n\n// Input: nums = [1,2,3]\n// Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]\n// Example 2:\n\n// Input: nums = [0]\n// Output: [[],[0]]\n\n// Constraints:\n\n// 1 <= nums.length <= 10\n// -10 <= nums[i] <= 10\n// All the numbers of nums are unique.\n\nfunction subsets(nums: number[]): number[][] {\n  const result: number[][] = [];\n\n  function dfs(index: number, path: number[]): void {\n    result.push([...path]);\n\n    // Explore further elements\n    for (let i = index; i < nums.length; i++) {\n      path.push(nums[i]); // Choose nums[i]\n      dfs(i + 1, path); // Recurse with next index\n      path.pop(); // Backtrack\n    }\n  }\n\n  dfs(0, []);\n  return result;\n}\n\nexport default subsets;\n"
+  },
+  {
+    "id": "leetcode-153.-find-minimum-in-rotated-sorted-array",
+    "name": "153. find minimum in rotated sorted array",
+    "path": "leetcode/153.-find-minimum-in-rotated-sorted-array",
+    "type": "leetcode",
+    "readme": "# 153. Find Minimum in Rotated Sorted Array\n\nThis function implements a modified binary search to find the minimum element in a rotated sorted array. It assumes the array was originally sorted in ascending order but rotated at an unknown pivot point.\n\n## Algorithm Overview\n\n- Initializes left and right pointers, and tracks the current minimum.\n- In each iteration, calculates the midpoint and compares the leftmost and rightmost elements.\n- If the left element is less than the right, the array is fully sorted, so the minimum is the left element (breaks early).\n- Otherwise, updates the minimum with the midpoint value, then decides the search direction: if the midpoint is >= left, the minimum is in the right half (move left pointer); else, it's in the left half (move right pointer).\n- Continues until the pointers meet, ensuring O(log n) time complexity.\n\n## Edge Cases\n\nEdge cases (e.g., no rotation, single element) are handled implicitly. This approach leverages the array's partial sorted property without linear scanning.\n",
+    "code": "// LeetCode Problem: 153. Find Minimum in Rotated Sorted Array\n\nfunction findMin(nums: number[]): number {\n  let l = 0;\n  let r = nums.length - 1;\n  let min = nums[0];\n\n  while (l <= r) {\n    const midIndex = Math.round((r + l) / 2);\n    const mid = nums[midIndex];\n    const left = nums[l];\n    const right = nums[r];\n\n    if (left < right) {\n      min = Math.min(min, left);\n      break;\n    }\n\n    min = Math.min(min, mid);\n    if (mid >= left) {\n      l = midIndex + 1;\n    } else {\n      r = midIndex - 1;\n    }\n  }\n\n  return min;\n}\nexport { findMin };\n"
+  },
+  {
+    "id": "leetcode-find-substring-consecutive",
+    "name": "find substring consecutive",
+    "path": "leetcode/find-substring-consecutive",
+    "type": "leetcode",
+    "code": "// problem find substring consecutive\n// for example: \"aabbccddaa\" => \"aa\", \"bb\", \"cc\", \"dd\", \"aa\" => 5\n// xxyz => \"xx\" => 1\n\nexport const countDistinctLetter = (s: string): number => {\n  const listDup = [];\n\n  for (let x = 0; x < s.length; x++) {\n    let start = x;\n    let next = x + 1;\n    const current = s[x];\n\n    while (current === s[next]) {\n      next++;\n\n      x = next - 1;\n    }\n\n    if (next - start >= 2) {\n      listDup.push(s.slice(start, next));\n    }\n  }\n\n  return listDup.length;\n};\n"
+  },
+  {
+    "id": "leetcode-283-Move-Zeroes",
+    "name": "283 Move Zeroes",
+    "path": "leetcode/283-Move-Zeroes",
+    "type": "leetcode",
+    "code": "// https://leetcode.com/problems/move-zeroes/description/?envType=study-plan-v2&envId=leetcode-75\n\n/**\n Do not return anything, modify nums in-place instead.\n */\nexport function moveZeroes(nums: number[]) {\n  let left = 0;\n  let right = 1;\n\n  // [0,1,0,3,12]\n  while (left < nums.length && right < nums.length) {\n    const leftN = nums[left];\n    const rightN = nums[right];\n\n    if (leftN) {\n      left++;\n      right = left + 1;\n    } else if (rightN === 0) {\n      right++;\n    } else {\n      nums[left] = rightN;\n      nums[right] = leftN;\n      left++;\n      right++;\n    }\n  }\n\n  return nums;\n}\n\nconsole.log(moveZeroes([0, 1, 0, 3, 12]));\n\n// [0,1,0,3,12]\n// 0, 1 -> [1,0,0,3,12]\n//\n"
+  },
+  {
+    "id": "leetcode-search-a-2d-matrix",
+    "name": "search a 2d matrix",
+    "path": "leetcode/search-a-2d-matrix",
+    "type": "leetcode",
+    "code": "function searchMatrix(matrix: number[][], target: number): boolean {\n  const ROW = matrix[0].length;\n  const COL = matrix.length;\n  const length = ROW * COL;\n  let l = 0;\n  let r = length - 1;\n\n  while (l <= r) {\n    let mid = l + Math.floor((r - l) / 2);\n    const col = Math.floor(mid / ROW);\n    const row = mid % ROW;\n    const midNum = matrix[col][row];\n\n    if (midNum === target) {\n      return true;\n    }\n\n    if (target > midNum) {\n      l = mid + 1;\n    }\n\n    if (target < midNum) {\n      r = mid - 1;\n    }\n  }\n\n  return false;\n}\nexport default searchMatrix;\n"
+  },
+  {
+    "id": "leetcode-masking-personal-information",
+    "name": "masking personal information",
+    "path": "leetcode/masking-personal-information",
+    "type": "leetcode",
+    "code": "const isEmail = (s: string): boolean => {\n  const regex = /[\\da-zA-Z]+@[\\da-zA-Z]+[.][a-zA-Z]+/g;\n\n  return regex.test(s);\n};\n\nfunction maskPII(s: string): string {\n  if (isEmail(s)) {\n    const [name, domain] = s.toLocaleLowerCase().split('@');\n\n    return `${name[0]}*****${name[name.length - 1]}@${domain}`;\n  }\n\n  let count = 0;\n  let lastDigits = '';\n  for (let i = s.length - 1; i >= 0; i--) {\n    if (s[i] === ' ') continue;\n    if (!isNaN(Number(s[i]))) {\n      count++;\n\n      if (lastDigits.length < 4) {\n        lastDigits = `${s[i]}${lastDigits}`;\n      }\n    }\n  }\n\n  const countryDigits = count - 10;\n  if (countryDigits === 0) return `***-***-${lastDigits}`;\n  if (countryDigits === 1) return `+*-***-***-${lastDigits}`;\n  if (countryDigits === 2) return `+**-***-***-${lastDigits}`;\n  if (countryDigits === 3) return `+***-***-***-${lastDigits}`;\n}\n\nexport default maskPII;\n"
+  },
+  {
+    "id": "problems-gasStations",
+    "name": "gasStations",
+    "path": "problems/gasStations",
+    "type": "problems",
+    "code": "// There are N gas stations along a circular route.\n// Each has A[i] amount of gas.\n// To travel from station i - i+1, there is B|i] cost.\n// Find the earliest station from where you can travel around the entire circuit.\n// Return -1 if not possible.\n// • Constraints:\n// • 1 <= N <= 16e\n\nconst gasStations = (gas: number[], cost: number[]): number => {\n  let result = -1;\n  let start = 0;\n\n  const doubleGas = gas.concat(gas);\n  const doubleCost = cost.concat(cost);\n\n  let currentGas = 0;\n  while (start < doubleGas.length && result === -1) {\n    for (let x = start; x < doubleCost.length; x++) {\n      // base case if this is a circle set result and end\n      if (x - start === gas.length) {\n        result = start;\n        break;\n      }\n\n      const newGas = doubleGas[x];\n      const newCost = doubleCost[x];\n\n      if (currentGas + (newGas - newCost) < 0) {\n        currentGas = 0;\n        start = x + 1;\n        break;\n      } else {\n        currentGas += newGas - newCost;\n      }\n    }\n  }\n\n  return result;\n};\n\nexport default gasStations;\n"
+  },
+  {
+    "id": "problems-217",
+    "name": "217",
+    "path": "problems/217",
+    "type": "problems",
+    "code": "// Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.\n\n// Example 1:\n\n// Input: nums = [1,2,3,1]\n// Output: true\n// Example 2:\n\n// Input: nums = [1,2,3,4]\n// Output: false\n// Example 3:\n\n// Input: nums = [1,1,1,3,3,4,3,2,4,2]\n// Output: true\n\n// Constraints:\n\n// 1 <= nums.length <= 105\n// -109 <= nums[i] <= 109\n\n/**\n * @param {number[]} nums\n * @return {boolean}\n */\nvar containsDuplicate = function (nums) {\n  const numberTable = {};\n\n  for (let x = 0; x < nums.length; x++) {\n    if (numberTable[nums[x]]) {\n      return true;\n    } else {\n      numberTable[nums[x]] = true;\n    }\n  }\n\n  return false;\n};\n"
+  },
+  {
+    "id": "problems-maximumNumberRecursion",
+    "name": "maximumNumberRecursion",
+    "path": "problems/maximumNumberRecursion",
+    "type": "problems",
+    "code": "const maximumNumber = (items: number[], maxNumber?: number): number | null => {\n  // base case\n  if (items.length === 0) return maxNumber || null;\n\n  // recursion case\n  const newMax = maxNumber ? Math.max(items[0], maxNumber) : items[0];\n  return maximumNumber(items.slice(1), newMax);\n};\n\nexport default maximumNumber;\n"
+  },
+  {
+    "id": "problems-bulbsSwitch",
+    "name": "bulbsSwitch",
+    "path": "problems/bulbsSwitch",
+    "type": "problems",
+    "code": "// Problem Discussion\n// Given N bulbs, either on (1) or off (0).\n// Turning on ith bulb causes all remaining bulbs on the right to flip.\n// Find the min number of switches to turn all the bulbs on.\n// • Constraints:\n// • 1 < N < 1e5\n// • A[i] = {0, 1}\n\nconst isEven = (n: number): boolean => {\n  return n % 2 === 0;\n};\n\nexport const bulbsSwitch = (bulbs: number[]): number => {\n  let cost = 0;\n\n  for (const bulb of bulbs) {\n    const bulbState = isEven(cost) ? !!bulb : !!!bulb;\n\n    if (!bulbState) {\n      cost++;\n    }\n  }\n\n  return cost;\n};\n"
+  },
+  {
+    "id": "problems-highestProduct",
+    "name": "highestProduct",
+    "path": "problems/highestProduct",
+    "type": "problems",
+    "code": "// Given an array of N integers.\n// Find the highest product by multiplying 3 elements.\n// •Constraints:\n// • 3 < N < 5e5\n\n// Input: [1, 2, 3, 4]\n// Output: 2 * 3 * 4 = 24\n\n// Input: [0, -1, 10, 7, 5]\n// Output: 5 * 7 * 10 = 350\nconst highestProduct = (arr: number[]): number => {\n  const numbers: number[] = [];\n  const sortedArr: number[] = arr.sort((a, b) => a - b);\n\n  // 3 highest numbers\n  const threeHighest =\n    (sortedArr.at(-1) as number) *\n    (sortedArr.at(-2) as number) *\n    (sortedArr.at(-3) as number);\n  // 2 lowest numbers and 1 highest number\n  const twoLowestOneHighest =\n    (sortedArr.at(0) as number) *\n    (sortedArr.at(1) as number) *\n    (sortedArr.at(-1) as number);\n\n  return Math.max(threeHighest, twoLowestOneHighest);\n};\n\nexport default highestProduct;\n"
+  },
+  {
+    "id": "problems-1480",
+    "name": "1480",
+    "path": "problems/1480",
+    "type": "problems",
+    "code": "// Given an array nums. We define a running sum of an array as runningSum[i] = sum(nums[0]…nums[i]).\n\n// Return the running sum of nums.\n\n// Example 1:\n\n// Input: nums = [1,2,3,4]\n// Output: [1,3,6,10]\n// Explanation: Running sum is obtained as follows: [1, 1+2, 1+2+3, 1+2+3+4].\n// Example 2:\n\n// Input: nums = [1,1,1,1,1]\n// Output: [1,2,3,4,5]\n// Explanation: Running sum is obtained as follows: [1, 1+1, 1+1+1, 1+1+1+1, 1+1+1+1+1].\n// Example 3:\n\n// Input: nums = [3,1,2,10,1]\n// Output: [3,4,6,16,17]\n\n// Constraints:\n\n// 1 <= nums.length <= 1000\n// -10^6 <= nums[i] <= 10^6\nvar runningSum = function (nums: number[]) {\n  let result: number[] = [];\n\n  for (let x = 0; x < nums.length; x++) {\n    const prevNum = result[x - 1] || 0;\n    result.push(prevNum + nums[x]);\n  }\n\n  return result;\n};\n"
+  },
+  {
+    "id": "problems-meetingRoom",
+    "name": "meetingRoom",
+    "path": "problems/meetingRoom",
+    "type": "problems",
+    "code": "// Given a list of intervals: [s, el for meetings.\n//   Find the least number of meeting rooms required.\n//   • Constraints:\n//   • 1 < N < 1e5\n//   • 1 ≤ A[i] [0] < A[i] [1] < 1e9\n\n// Input: [[5, 10], [15,20], [0,30]]\n// Output: 2\n// Explanation:\n// [0,30] and [5, 10] take place simultaneously\n// Same for [0,30] and [15, 20]\n\nconst meetingRoom = (intervals: number[][]): number => {\n  const intervalsSorted = intervals.sort(\n    (first, second) => first[0] - second[0],\n  );\n  const rooms = [];\n\n  for (let x = 0; x < intervalsSorted.length; x++) {\n    const interval = intervalsSorted[x];\n    let found = false;\n    let i = 0;\n    // find room\n    while (i < rooms.length && !found) {\n      const room = rooms[i];\n      // check if found\n      if (room[1] <= interval[0]) {\n        found = true;\n        room[1] = interval[1];\n      }\n      i++;\n    }\n\n    if (!found) {\n      rooms.push(interval);\n    }\n  }\n\n  return rooms.length;\n};\n\nexport const meetingRoom2 = (intervals: number[][]): number => {\n  let max = 0;\n\n  // [[5, 10], [15, 20]] -> {5: 1, 10: -1, 15: 1, 20: -2};\n  const intervalByKey = intervals.reduce<Record<string, number>>(\n    (acc, current) => {\n      const [start, end] = current;\n\n      acc[start] = (acc[start] || 0) + 1;\n      acc[end] = (acc[end] || 0) - 1;\n\n      return acc;\n    },\n    {},\n  );\n\n  const keysSorted = Object.keys(intervalByKey).sort(\n    (a, b) => Number(a) - Number(b),\n  );\n\n  let currentRoom = 0;\n  keysSorted.forEach((time) => {\n    const numberOfRoom = intervalByKey[time];\n    currentRoom += numberOfRoom;\n\n    if (currentRoom > max) {\n      max = currentRoom;\n    }\n  });\n\n  return max;\n};\n\nexport default meetingRoom;\n"
+  },
+  {
+    "id": "problems-largestPermutation",
+    "name": "largestPermutation",
+    "path": "problems/largestPermutation",
+    "type": "problems",
+    "code": "// Given an array A of random permutation of numbers from 1 to N. Given the number of swaps in A\n// That we can make.\n// Find the largest permutation possible.\n// • Constraints:\n// • 1 < N < 1e6\n// • 1 < B < 1e9\n\n// It just like sort but with limited swaps\n\nexport const largestPermutationFirst = (arr: number[], k: number): number[] => {\n  if (k === 0) return arr;\n  let times = k;\n  const result = [...arr];\n  const arrSorted = result.sort((a, b) => b - a);\n  const valueToKey = result.reduce<{ [key: string]: number }>(\n    (pre, value, index) => {\n      pre[value] = index;\n      return pre;\n    },\n    {},\n  );\n\n  let i = 0;\n  while (times > 0 && i < arr.length) {\n    // if current item is the same\n    if (result[i] !== arrSorted[i]) {\n      // find key of current value\n      const key = valueToKey[arrSorted[i]];\n\n      // swap\n      result[key] = result[i];\n      result[i] = arrSorted[i];\n\n      // update valueToKey\n      valueToKey[result[i]] = key;\n      valueToKey[arrSorted[i]] = result[i];\n\n      times--;\n    }\n\n    i++;\n  }\n\n  return result;\n};\n\nexport const largestPermutation = (arr: number[], k: number): number[] => {\n  let i = 0;\n  let max = arr.length;\n  const valueToKey = arr.reduce<{ [key: string]: number }>(\n    (pre, value, index) => {\n      pre[value] = index;\n      return pre;\n    },\n    {},\n  );\n\n  while (k > 0 && i < arr.length) {\n    if (arr[i] !== max) {\n      const key = valueToKey[max];\n      valueToKey[max] = i;\n      valueToKey[arr[i]] = key;\n\n      const temp = arr[i];\n      arr[i] = max;\n      arr[key] = temp;\n\n      k--;\n    }\n\n    max--;\n    i++;\n  }\n\n  return arr;\n};\n\nexport default largestPermutation;\n"
+  },
+  {
+    "id": "problems-724",
+    "name": "724",
+    "path": "problems/724",
+    "type": "problems",
+    "code": "// Given an array of integers nums, calculate the pivot index of this array.\n\n// The pivot index is the index where the sum of all the numbers strictly to the left of the index is equal to the sum of all the numbers strictly to the index's right.\n\n// If the index is on the left edge of the array, then the left sum is 0 because there are no elements to the left. This also applies to the right edge of the array.\n\n// Return the leftmost pivot index. If no such index exists, return -1.\n\n// Example 1:\n\n// Input: nums = [1,7,3,6,5,6]\n// Output: 3\n// Explanation:\n// The pivot index is 3.\n// Left sum = nums[0] + nums[1] + nums[2] = 1 + 7 + 3 = 11\n// Right sum = nums[4] + nums[5] = 5 + 6 = 11\n// Example 2:\n\n// Input: nums = [1,2,3]\n// Output: -1\n// Explanation:\n// There is no index that satisfies the conditions in the problem statement.\n// Example 3:\n\n// Input: nums = [2,1,-1]\n// Output: 0\n// Explanation:\n// The pivot index is 0.\n// Left sum = 0 (no elements to the left of index 0)\n// Right sum = nums[1] + nums[2] = 1 + -1 = 0\n\n// Constraints:\n\n// 1 <= nums.length <= 104\n// -1000 <= nums[i] <= 1000\n\n// Note: This question is the same as 1991: https://leetcode.com/problems/find-the-middle-index-in-array/\n\nvar pivotIndex = function (nums) {\n  let result = -1;\n\n  for (let x = 0; x < nums.length; x++) {\n    const totalLeft = nums.slice(0, x).reduce((acc, curr) => acc + curr, 0);\n    const totalRight = nums\n      .slice(x + 1, nums.length)\n      .reduce((acc, curr) => acc + curr, 0);\n\n    if (totalLeft === totalRight) {\n      result = x;\n      break;\n    }\n  }\n\n  return result;\n};\n"
+  },
+  {
+    "id": "problems-countDaysCompleted",
+    "name": "countDaysCompleted",
+    "path": "problems/countDaysCompleted",
+    "type": "problems",
+    "code": "// In order to finish a game, a player has to complete N missions.\n// The missions are numbered from 0 to N-1. The K-th mission has an integer D[K] assigned, representing its difficulty level.\n// During a day, you can perform any number of missions given the two following rules:\n// • missions should be performed in the specified order, in other words,\n//   a mission can be undertaken only if all of the missions preceding it have already been completed;\n// • the difference between the difficulty levels of any two missions performed\n//   on the same day should not be greater than an integer X.\n// Write a function:\n// class Solution { public int solution(int(J D, int X); )\n// that, given an array D of N integers and an integer X,\n// returns the minimum number of days required to complete all of the missions in the game.\n// Examples:\n// 1. Given D = [5, 8, 2, 7] and X = 3, your function should return 3. The first two missions can be\n// performed on the first day, the third mission on the second day and the last mission on the third day.\n// It is not possible to complete all of the missions in fewer days.\n// 2. Given D = [2, 5, 9, 2, 1, 4] and X = 4, your function should return 3. The first two missions can be\n// performed on the first day, the third mission on the second day and all of the remaining missions on the third day. Note that it is possible to perform the first mission on the first day and the next two missions on the second day. In both of these cases, the minimum number of days required to complete all of the missions is 3.\n// 3. Given D = [1, 12, 10, 4, 5, 2] and X = 2, your function should return 4. The first mission can be\n// performed on the first day, the next two missions on the second day, the fourth and fifth missions on the third day, and the last remaining mission on the fourth day. It is not possible to complete all of the missions in fewer days.\n// Write an efficient algorithm for the following assumptions:\n// N is an integer within the range [1..200,000);\n// X is an integer within the range [0.. 1,000,000,000];\n// each element of array D is an integer within the range [1.. 1,000,000,000].\n\nconst solution = (D: number[], X: number): number => {\n  let result = 1;\n  // previous using to store min, max\n  let previous: number[] = [];\n\n  for (const quest of D) {\n    const min = Math.min(...previous, quest);\n    const max = Math.max(...previous, quest);\n    const diff = Math.abs(max - min);\n\n    if (diff > X) {\n      result += 1;\n      previous = [quest];\n    } else {\n      previous = [min, max];\n    }\n  }\n\n  return result;\n};\n\nexport default solution;\n"
+  },
+  {
+    "id": "problems-squareBox",
+    "name": "squareBox",
+    "path": "problems/squareBox",
+    "type": "problems",
+    "code": "// You want to divide a farm evenly into squares\n// the plots to be big as possible\n\nconst solution = (farm: number[]): number => {\n  const length = Math.max(farm[0], farm[1]);\n  const width = Math.min(farm[0], farm[1]);\n  // base case\n  if (length % width === 0) {\n    return width;\n  }\n\n  // recursion case\n  // make the farm smaller\n  const newFarm: [number, number] = [width, length - width];\n  return solution(newFarm);\n};\n\nexport default solution;\n"
+  },
+  {
+    "id": "problems-moveSeats",
+    "name": "moveSeats",
+    "path": "problems/moveSeats",
+    "type": "problems",
+    "code": "// There is a row of empty (.) and filled(x) seats.\n// Find the minimum number of moves required to make the people sit together.\n// • Constraints\n// • 1 < N < 1e6\n\nimport sumNumbers from '../../utils/sumNumbers';\n\n// Example:\n// Input: \"..x..x.\"\n// Output: 2\n//\n// Explanation:\n// Either of the \"×\"s can move to the seat closest to the other one.\n// \"..xx...\" OR \"....xx.\"\n\nconst moveSeats = (seats: string): number => {\n  const listSeat = seats.split('');\n  const seatHavePeople = listSeat.reduce<number[]>((acc, curr, index) => {\n    if (curr === 'x') {\n      acc.push(index);\n    }\n    return acc;\n  }, []);\n\n  // return 0 if no people\n  if (!seatHavePeople.length) return 0;\n\n  // move it to in a row\n  const seatHavePeopleRow = seatHavePeople.map((item, index) => item - index);\n  const pivot = seatHavePeopleRow[Math.floor(seatHavePeopleRow.length / 2)];\n\n  let result;\n  for (let x = pivot; x < seats.length; x++) {\n    let total = 0;\n\n    // loop to seatHavePeopleRow\n    for (const seat of seatHavePeopleRow) {\n      total += Math.abs(seat - x);\n    }\n\n    result = result ? Math.min(result, total) : total;\n  }\n\n  return result || 0;\n};\n\nexport default moveSeats;\n"
+  },
+  {
+    "id": "problems-disJoinInterval",
+    "name": "disJoinInterval",
+    "path": "problems/disJoinInterval",
+    "type": "problems",
+    "code": "// Given a list of intervals:\n// [start, end].\n// Find the length of the maximal set of mutually disjoint intervals.\n// • Constraints:\n// • 1 < N < 1e5\n// • 1 ≤ A[i][0] < AÇi][1] < 1e9\n\n// Input: [[1,2], [2, 10], [4, 6]]\n// Output: 2\n// Explanation:\n// Select [1,2] and [4, 6].\n// Selecting [2, 10] will block [1,2] and [4, 6]\n\nconst disjointInterval = (arr: number[][]): number => {\n  const arrSorted = arr.sort((a, b) => a[1] - b[1]);\n  let result = 0;\n  let lastInterval: number[] = [];\n\n  for (const item of arrSorted) {\n    if (!lastInterval.length) {\n      lastInterval = item;\n      result++;\n    } else {\n      const [start] = item;\n\n      if (start > lastInterval[1]) {\n        result++;\n        lastInterval = item;\n      }\n    }\n  }\n\n  return result;\n};\n\nexport default disjointInterval;\n"
+  },
+  {
+    "id": "problems-intToRoman",
+    "name": "intToRoman",
+    "path": "problems/intToRoman",
+    "type": "problems",
+    "code": "const mapper = {\n  1000: 'M',\n  900: 'CM',\n  500: 'D',\n  400: 'CD',\n  100: 'C',\n  90: 'XC',\n  50: 'L',\n  40: 'XL',\n  10: 'X',\n  9: 'IX',\n  5: 'V',\n  4: 'IV',\n  1: 'I',\n};\n\nvar romanToInt = function (s: number) {\n  let searchNumber = s;\n  let result = '';\n  let currentIndex = 0;\n\n  // sort numbers DESC, [1000, 900, ..., 1]\n  const numbers = Object.keys(mapper)\n    .map((i) => +i)\n    .sort((a, b) => b - a);\n\n  while (searchNumber > 0) {\n    const currentNumber = numbers[currentIndex];\n    if (currentNumber > searchNumber) {\n      currentIndex++;\n    } else {\n      searchNumber = searchNumber - currentNumber;\n      result += mapper[currentNumber as keyof typeof mapper];\n    }\n  }\n  return result;\n};\n\nexport default romanToInt;\n"
+  },
+  {
+    "id": "problems-countCamera",
+    "name": "countCamera",
+    "path": "problems/countCamera",
+    "type": "problems",
+    "code": "// There is a street described by a string S. Each character in S is one of the following:\n// \"<\" denotes a car going to the left,\n// \"\" denotes a car going to the right,\n// \" denotes a speed camera.\n// Count the total number of times that cars pass by a speed camera. A car going to the left will pass every speed camera that is to the left of it, and similarly, a car going to the right will pass every speed camera to the right of it.\n// Write a function:\n// class Solution { public int solution(String S); )\n// that, given a string S of length N, returns the total number of times that cars pass by a speed camera.\n// Examples:\n// 1. Given S=\".>...\" the function should return 3. The car will pass by three speed cameras to the\n// right of it.\n// 2. Given S = \" .> .<.>\" the function should return 4. The first two cars will pass by two speed\n// cameras each, and the third car will not pass by any.\n// 3. Given S = \">>>.<<<\", the function should return 6. Each car will pass one speed camera.\n// Assume that:\n// • N is an integer within the range [1...100];\n// • string S is made only of the following characters: '<, '>' and/or'\n// In your solution, focus on correctness. The performance of your solution will not be the focus of the assessment.\n\n// .>...\nconst solution = (s: string): number => {\n  let result = 0;\n\n  // total cars right = 0;\n  // find total cars Lefts\n  let totalCarsRight = 0;\n  let totalCarsLeft = s.split('').reduce((pre, curr) => {\n    if (curr === '<') return pre + 1;\n    return pre;\n  }, 0);\n\n  // loop to s with item\n  // if item = \".\" -> update result += total cars right + total cars left\n  // if item = \"<\"\n  //   update total cars left -= 1\n  // if item = \"<\"\n  //   update total cars right += 1\n\n  for (let i = 0; i < s.length; i++) {\n    const item = s[i];\n\n    if (item === '.') {\n      result += totalCarsLeft + totalCarsRight;\n    }\n    if (item === '<') {\n      totalCarsLeft -= 1;\n    }\n    if (item === '>') {\n      totalCarsRight += 1;\n    }\n  }\n\n  return result;\n};\n\nexport default solution;\n"
+  },
+  {
+    "id": "problems-namesBook",
+    "name": "namesBook",
+    "path": "problems/namesBook",
+    "type": "problems",
+    "code": "/**\n * Implement names book with array and linked list\n * Array will have 26 slots for each letter of the alphabet\n * In each slot will be linked list of names\n */\nimport LinkedList from '../../data-structure/linkedList';\n\nconst namesBook = () => {\n  // name book is an array of 26 slots alphabetically a - z\n  const book = new Array(26).fill(null);\n\n  const insert = (name: string) => {\n    // insert name into the book\n    const firstLetter = name[0].toLowerCase();\n    const index = firstLetter.charCodeAt(0) - 97;\n    if (book[index] === null) {\n      book[index] = LinkedList();\n    }\n    book[index].add(name);\n  };\n\n  return {\n    insert,\n    book,\n  };\n};\n\nexport default namesBook;\n"
+  },
+  {
+    "id": "problems-friendsConnection",
+    "name": "friendsConnection",
+    "path": "problems/friendsConnection",
+    "type": "problems",
+    "code": "// The function returns the number of degrees of separation between the two people.\n// If no connection can be made through friends or friends of friends etc then return -1.\nconst solution = (\n  connections: string[],\n  name1: string,\n  name2: string,\n): number => {\n  const graph: { [key: string]: string[] } = {};\n  // build a graph\n  for (let connection of connections) {\n    const [left, right] = connection.split(':');\n    if (!graph[left]) {\n      graph[left] = [right];\n    } else {\n      graph[left].push(right);\n    }\n\n    if (!graph[right]) {\n      graph[right] = [left];\n    } else {\n      graph[right].push(left);\n    }\n  }\n  // use breadth first search to find the shortest path\n  const queue = [name1];\n  const searched: string[] = [];\n  let degrees = 0;\n\n  while (queue.length) {\n    let size = queue.length;\n    for (let x = 0; x < size; x++) {\n      const person = queue.shift() as string;\n      if (person === name2) {\n        return degrees;\n      }\n\n      if (!searched.includes(person)) {\n        const personFriends = graph[person];\n        queue.push(...personFriends);\n        searched.push(person);\n      }\n    }\n\n    degrees++;\n  }\n\n  return -1;\n};\n\n// TODO: draw graph connection result\n\nexport default solution;\n"
+  },
+  {
+    "id": "problems-sumRecursion",
+    "name": "sumRecursion",
+    "path": "problems/sumRecursion",
+    "type": "problems",
+    "code": "const sum = (numbers: number[]): number => {\n  // base case\n  if (!numbers.length) return 0;\n\n  // recursion case\n  return numbers[0] + sum(numbers.slice(1));\n};\n\nexport default sum;\n"
+  },
+  {
+    "id": "problems-majorityElement",
+    "name": "majorityElement",
+    "path": "problems/majorityElement",
+    "type": "problems",
+    "code": "// Given an array of integers of length N.\n// Majority element occurs with > IN/2] frequency\n// Find the majority element.\n// • Constraints\n// • 1 < N < 1e6\n\nconst majorityElement = (arr: number[]): number | undefined => {\n  if (!arr.length) return;\n  const dictionary = arr.reduce<Record<string, number>>((acc, current) => {\n    acc[current] = acc[current] ? acc[current] + 1 : 1;\n    return acc;\n  }, {});\n\n  const majority = Math.floor(arr.length / 2);\n  let result;\n\n  for (const key in dictionary) {\n    if (dictionary[key] > majority) {\n      result = Number(key);\n      break;\n    }\n  }\n\n  return result;\n};\n\nexport default majorityElement;\n"
+  },
+  {
+    "id": "problems-spint",
+    "name": "spint",
+    "path": "problems/spint",
+    "type": "problems",
+    "readme": "Define a slot machine with three reels that can individually \"spin\"(). and then display() the current contents of all the reels.\n",
+    "code": "function randMax(max: number) {\n  return Math.trunc(1e9 * Math.random()) % max;\n}\n\ntype Reel = {\n  symbols: string[];\n  position: number | null;\n  spin(): void;\n  display(): string;\n};\n\nconst symbols = ['X', 'Y', 'Z', 'W', '$', '*', '<', '@'];\n\nconst reel: Reel = {\n  position: null,\n  symbols,\n  spin() {\n    if (this.position == null) {\n      this.position = randMax(this.symbols.length - 1);\n    }\n    this.position = (this.position + 100 + randMax(100)) % this.symbols.length;\n  },\n  display() {\n    if (this.position == null) {\n      this.position = randMax(this.symbols.length - 1);\n    }\n    return this.symbols[this.position];\n  },\n};\n\nconst slotMachine = {\n  reels: [Object.create(reel), Object.create(reel), Object.create(reel)],\n  spin() {\n    this.reels.forEach(function spinReel(reel) {\n      reel.spin();\n    });\n  },\n  // < | @ | *\n  // @ | X | <\n  // X | Y | @\n  display() {\n    // TODO\n    // console.log(this.reels);\n    const positions = this.reels.map((i) => i.position);\n\n    for (let y = -1; y <= 1; y++) {\n      const result = positions\n        .map((position) => {\n          const temp = Object.create(reel);\n          const newPosition = position + y;\n\n          if (newPosition < 0) {\n            temp.position = symbols.length - 1;\n          } else if (newPosition === symbols.length) {\n            temp.position = 0;\n          } else {\n            temp.position = position + y;\n          }\n\n          return temp.display();\n        })\n        .join(' | ');\n      console.log(result);\n    }\n  },\n};\n\nfor (let x = 0; x < 10; x++) {\n  slotMachine.spin();\n  slotMachine.display();\n\n  console.log('---new---');\n}\n"
+  },
+  {
+    "id": "problems-distributeCandy",
+    "name": "distributeCandy",
+    "path": "problems/distributeCandy",
+    "type": "problems",
+    "code": "// distributeCandy\n// N kids stand in a line, each having an integer rating. We distribute candies following:\n// • Each kid gets at least 1 candy\n// • Kids with higher ratings than their neighbours get more candies.\n// Find the **minimum** candies required.\n\n// Input: [1,3,7,1]\n// Output: 7\n// Explanation:\n// Candies: [1,2,3,1]\n\nconst distribute = (ratings: number[]): number => {\n  let candies: number[] = [];\n  const keyValuePair = Object.entries(ratings).sort(\n    (first, second) => first[1] - second[1],\n  );\n\n  for (let x = 0; x < keyValuePair.length; x++) {\n    const [index, value] = keyValuePair[x];\n    let candy = 1;\n\n    // check right kid\n    if (value > candies[Number(index) + 1]) {\n      candy = Math.max(candy, candies[Number(index) + 1] + 1);\n    }\n\n    // check left kid\n    if (value > candies[Number(index) - 1]) {\n      candy = Math.max(candy, candies[Number(index) + -1] + 1);\n    }\n\n    candies[Number(index)] = candy;\n  }\n  return candies.reduce((acc, curr) => acc + curr, 0);\n};\n\nexport default distribute;\n"
+  },
+  {
+    "id": "problems-1004. Max Consecutive Ones III",
+    "name": "1004. Max Consecutive Ones III",
+    "path": "problems/1004. Max Consecutive Ones III",
+    "type": "problems",
+    "code": "export function longestOnes(nums: number[], k: number): number {\n  let longest = 0;\n  let slots = [];\n  let start;\n\n  for (let x = 0; x < nums.length; x++) {\n    const i = nums[x];\n\n    if (i === 1 && start === undefined) {\n      start = x;\n    }\n\n    if (i === 0) {\n      const flipAble = slots.length < k;\n      if (!flipAble && slots.length) {\n        const firstSlot = slots.shift() as number;\n        start = firstSlot + 1;\n      }\n\n      if (slots.length < k) {\n        slots.push(x);\n        if (start === undefined) {\n          start = x;\n        }\n      } else {\n        start = undefined;\n      }\n    }\n\n    if (start !== undefined) {\n      const length = x + 1 - start;\n      longest = Math.max(longest, length);\n    }\n  }\n\n  return longest;\n}\n"
+  },
+  {
+    "id": "problems-lengthOfLongestSubstring",
+    "name": "lengthOfLongestSubstring",
+    "path": "problems/lengthOfLongestSubstring",
+    "type": "problems",
+    "code": "// Given a string s, find the length of the longest\n// substring\n//  without repeating characters.\n\n// Example 1:\n\n// Input: s = \"abcabcbb\"\n// Output: 3\n// Explanation: The answer is \"abc\", with the length of 3.\n// Example 2:\n\n// Input: s = \"bbbbb\"\n// Output: 1\n// Explanation: The answer is \"b\", with the length of 1.\n// Example 3:\n\n// Input: s = \"pwwkew\"\n// Output: 3\n// Explanation: The answer is \"wke\", with the length of 3.\n// Notice that the answer must be a substring, \"pwke\" is a subsequence and not a substring.\n\n/**\n * @param {string} s\n * @return {number}\n */\nconst lengthOfLongestSubstring = (s: string): number => {\n  if (!s) return 0;\n\n  let result = 1;\n  let left = 0;\n\n  for (let r = 1; r < s.length; r++) {\n    const current = s[r];\n    const subStr = s.slice(left, r);\n    const indexOfR = subStr.indexOf(current);\n\n    if (indexOfR >= 0) {\n      left += indexOfR + 1;\n    } else {\n      result = Math.max(subStr.length + 1, result);\n    }\n  }\n\n  return result;\n};\n\nexport default lengthOfLongestSubstring;\n"
+  },
+  {
+    "id": "problems-assignMiceToHoles",
+    "name": "assignMiceToHoles",
+    "path": "problems/assignMiceToHoles",
+    "type": "problems",
+    "code": "// There are N mice and N holes. A mice takes 1 minute to travel 1 unit left or right.\n// Find the minimum time after which all mice are in holes.\n// •Constraints:\n// • 1 < N < 1e5\n// • - 1e9 < Alil < Blil < 1e9\n\nconst assignMiceToHoles = (\n  mice: number[],\n  holes: number[],\n): number | undefined => {\n  if (!mice.length) return;\n\n  const miceSorted = mice.sort((a, b) => a - b);\n  const holesSorted = holes.sort((a, b) => a - b);\n\n  let maximum = 0;\n\n  for (let x = 0; x < miceSorted.length; x++) {\n    const steps = Math.abs(miceSorted[x] - holesSorted[x]);\n    maximum = Math.max(steps, maximum);\n  }\n\n  return maximum;\n};\n\nexport default assignMiceToHoles;\n"
+  },
+  {
+    "id": "problems-binaryInventory",
+    "name": "binaryInventory",
+    "path": "problems/binaryInventory",
+    "type": "problems",
+    "code": "import { faker } from '@faker-js/faker';\nimport { binarySearch } from '../../binarySearch';\n\nconst binaryInventory = () => {\n  const inventory: string[] = [];\n\n  // add item to inventory\n  // if item already exists, do not add\n  // if item does not exist, add it\n  // make sure item sorted alphabetically\n  const add = (item: string) => {\n    const alreadyExist = haveItem(item);\n    if (alreadyExist) return;\n\n    let insertIndex;\n    for (let x = 0; x < inventory.length; x++) {\n      if (item < inventory[x]) {\n        insertIndex = x;\n        break;\n      }\n    }\n    if (insertIndex == undefined) {\n      insertIndex = inventory.length;\n    }\n    inventory.splice(insertIndex, 0, item);\n  };\n\n  const haveItem = (item: string) => {\n    return binarySearch(inventory, item) !== -1;\n  };\n\n  const getList = () => {\n    return inventory;\n  };\n\n  return {\n    add,\n    getList,\n    haveItem,\n  };\n};\n\nexport default binaryInventory;\n"
+  },
+  {
+    "id": "problems-chatSplit",
+    "name": "chatSplit",
+    "path": "problems/chatSplit",
+    "type": "problems",
+    "readme": "# Assignment - Project TwitSplit\n\n## Description\n\nThe product Tweeter allows users to post short messages limited to 50 characters each.\n\nSometimes, users get excited and write messages longer than 50 characters.\n\nInstead of rejecting these messages, we would like to add a new feature that will split the message into parts and send multiple messages on the user's behalf,\nall of them meeting the 50 character requirement.\n\n### Example\n\nSuppose the user wants to send the following message:\n\"I can't believe Tweeter now supports chunking my messages, so I don't have to do it myself.\"\nThis is 91 characters excluding the surrounding quotes. When the user presses send, it will send the following messages:\n\"1/2 I can't believe Tweeter now supports chunking\" \"2/2 my messages, so I don't have to do it myself.\"\nEach message is now 49 characters, each within the allowed limit.\n\n## Requirements\n\n- Create a web application that serves the Tweeter interface. It will support the following functionality:\n- Allow the user to input and send messages.\n- Display the user's messages.\n- If a user's input is less than or equal to 50 characters, post it as is.\n- If a user's input is greater than 50 characters, split it into chunks that each is less than or equal to 50 characters and post each chunk as a separate message.\n- Messages will only be split on whitespace. If the message contains a span of non-whitespace characters longer than 50 characters, display an error.\n- Split messages will have a \"part indicator\" appended to the beginning of each section. In the example above, the message was split into two chunks, so the part indicators read \"1/2\" and \"2/2\". Be aware that these count toward the character limit.\n  •\n  Given the above example, its function call would look like:\n  The functionality that splits messages should be a standalone function.\n  splitMessage(\"I can't believe Tweeter now supports chunking my messages, so I don't have to do it myself.\")\n  and it would return\n  [\"1/2 I can't believe Tweeter now supports chunking\", \"2/2 my messages, so I don't have to do it myself.\"]\n- The business logic (a.k.a. the message splitter) should be unit tested.We have to know it works, right?\n- The submission should be a git repository. In the project directory, `git log`should show your commits.\n- Bonus points for any additional polish and sophistication you add to the experience.\n\n### Considerations - What are we looking for?\n\n- We want to see how you create a new project and what technologies you decide to you use. A good project will be cleanly structured, will only contain the dependencies it needs, and will be well-documented and well-tested. What matters is not the technologies you use, but the reasons for your decisions. Bonus\n  points will be given for demonstrating knowledge of modern Javascript techniques and best practices.\n- We want to see your command of core web technologies: HTML, CSS, JavaScript. The most critical part of this assignment is the message splitting functionality; so this should be in plain Javascript without the use of libraries. The rest of the application may make use of utility libraries and frameworks.\n\n### Submission\n\n- Make a zip archive out of your project along with the .git folder, attach your project to the email or upload it to google drive. Send it to tech-hiring at zalora dot com.\n- You have one week to complete the assignment. Please write in if youhave special circumstances where you cannot complete it on time.\n",
+    "code": "export const MAX_MESSAGE_LENGTH = 50;\n\nconst splitMessage = (\n  msg: string,\n  chunkSize: number = MAX_MESSAGE_LENGTH,\n): string[] => {\n  // base case\n  if (msg.length <= chunkSize) return [msg];\n\n  // split message into words\n  const words = msg.split(' ');\n  const chunkMessages: string[] = [];\n\n  // loop through words to get chunkMessages (no number) (n)\n  // get length chunkMessages\n  for (let word of words) {\n    if (!chunkMessages.length) {\n      chunkMessages.push(word);\n    } else {\n      const currentChunk = chunkMessages[chunkMessages.length - 1];\n\n      // if can't add word to current chunk\n      if (currentChunk.length + word.length > chunkSize + 1) {\n        // create new chunk\n        chunkMessages.push(word);\n      } else {\n        // else push it to current chunk\n        chunkMessages[chunkMessages.length - 1] = currentChunk + ` ${word}`;\n      }\n    }\n  }\n\n  // -> plus length with 1, convert to string and get length (example: 9 + 1 = 10 -> 2, 99 + 1 = 100 -> length 3)\n  const possibleTotalChunkStringLength = (chunkMessages.length + 1).toString()\n    .length;\n\n  // `${index}/${xxx} hello the world...`\n  const chunkMessagesWithNumber: string[] = [];\n\n  // chunkMessages.map((i, index) => `${index + 1}/${'x'.repeat(possibleTotalChunkStringLength)} ${i}`);\n  for (let x = 0; x < chunkMessages.length; x++) {\n    const chunkMessage = chunkMessages[x];\n    let chunkMessageWithNumber: string = `${x + 1}/${'x'.repeat(\n      possibleTotalChunkStringLength,\n    )} ${chunkMessage}`;\n\n    // handle if chunkMessageWithNumber more than chunkSize\n    if (chunkMessageWithNumber.length > chunkSize) {\n      // message need to move\n      let indexSplit = chunkSize - 1;\n\n      while (chunkMessageWithNumber[indexSplit] !== ' ' && indexSplit > 0) {\n        indexSplit--;\n      }\n\n      let messageNeedMove = chunkMessageWithNumber.slice(indexSplit + 1);\n      chunkMessageWithNumber = chunkMessageWithNumber.slice(0, indexSplit + 1);\n      // add messageNeedMove to next chunk\n      if (!chunkMessages[x + 1]) {\n        chunkMessages[x + 1] = messageNeedMove;\n      } else {\n        chunkMessages[x + 1] = `${messageNeedMove} ${chunkMessages[x + 1]}`;\n      }\n    }\n\n    chunkMessagesWithNumber.push(chunkMessageWithNumber);\n  }\n\n  // replace x with chunkMessagesWithNumber length\n  const chunkMessagesWithNumberWithLength = chunkMessagesWithNumber.map((i) =>\n    i.replace(\n      'x'.repeat(possibleTotalChunkStringLength),\n      chunkMessagesWithNumber.length.toString(),\n    ),\n  );\n\n  return chunkMessagesWithNumberWithLength;\n};\n\nexport default splitMessage;\n"
+  }
+]

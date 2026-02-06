@@ -7,7 +7,9 @@
     "test": "bun test",
     "coverage": "bun test --coverage",
     "format": "prettier --write .",
-    "add-problem": "bun run ./scripts/quick-create-files.ts"
+    "add-problem": "bun run ./scripts/quick-create-files.ts",
+    "generate-data": "bun run ./scripts/generate-data.ts",
+    "dashboard": "bun run generate-data && cd dashboard && bun run dev"
   },
   "author": "",
   "license": "ISC",
