@@ -39,5 +39,4 @@ function subsets(nums: number[]): number[][] {
   return result;
 }
 
-// Test cases
-console.log(subsets([1, 2, 3]));
+export default subsets;
